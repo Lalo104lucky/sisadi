@@ -1,0 +1,198 @@
+/* Color del cuerpo */	
+body {
+    background-color: #f7f7f7;
+}
+/* Logos de la cabecera */
+header {
+    padding: 1rem 0;
+}
+.logo-container {
+    max-width: 30%; 
+}
+.logo-container img {
+    max-width: 75%;
+    height: auto;
+    margin: 0; 
+}
+.logos-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.logos-wrapper img {
+    margin: 0px;
+}
+/* Letras SISADI */	
+nav h1{
+    margin: 0;
+    padding: 0;
+}
+.navbar h1 {
+    font-size: 2rem;
+    font-weight: bold;
+}
+.form-group {
+    display: flex;
+    align-items: center;
+}
+.form-group label {
+    min-width: 100px;
+    margin-right: 10px;
+}
+.form-check {
+    display: flex;
+    align-items: center;
+}
+.form-check label {
+    margin-left: 5px;
+}
+.btn-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+}
+/* inicio de Sesión */
+main {
+    margin-top: 2rem;
+}
+/* Logos del final */
+footer {
+    margin-top: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; 
+    position: relative;
+}
+
+.logos-wrapp {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 8.5rem;
+    position: relative;
+}
+
+.logo-container1,
+.logo-container2 {
+    max-width: 25%; 
+}
+
+.logo-container1 img {
+    max-width: 40%; 
+    height: auto;
+    margin: 0;
+}
+
+.logo-container2 img {
+    max-width: 100%; 
+    height: auto;
+    margin: 0;
+}
+footer::before,
+footer::after {
+    content: "";
+    display: block;
+    width: 32%;
+    height: 0.1rem; 
+    background-color: rgb(172, 172, 172);
+    position: absolute; 
+    top: 50%; 
+    transform: translateY(-50%); 
+}
+
+footer::before {
+    left: 0; 
+    margin-left: 20px; 
+}
+
+footer::after {
+    right: 0; 
+    margin-right: 20px; 
+}
+
+@media (max-width: 1024px) {
+    .logo-container1,
+    .logo-container2 {
+        max-width: 30%;
+    }
+
+    footer::before, footer::after {
+        width: 30%; 
+    }
+}
+
+@media (max-width: 768px) {
+    .logo-container1,
+    .logo-container2 {
+        max-width: 40%;
+    }
+
+    footer::before, footer::after {
+        width: 20%; 
+    }
+}
+
+@media (max-width: 480px) {
+    .logo-container1,
+    .logo-container2 {
+        max-width: 60%;
+    }
+
+    footer::before, footer::after {
+        width: 15%; 
+    }
+}
+
+.btn-custom {
+    background-color: #BC1E43; 
+    color: #ffffff; 
+    border: none; 
+}
+
+.btn-custom:hover,
+.btn-custom:focus,
+.btn-custom:active {
+    background-color: #A61C3C !important;
+}
+
+.btn-custom:focus {
+    box-shadow: 0 0 0 0.2rem rgba(166, 28, 60, 0.5);
+}
+
+.input-custom {
+    border: 2px solid #A61C3C; 
+}
+
+.input-custom:hover,
+.input-custom:active,
+.input-custom:focus {
+    border: 2px solid #A61C3C; 
+}
+
+
+.input-custom:focus {
+    box-shadow: 0 0 0 0.2rem rgba(166, 28, 60, 0.5); 
+}
+
+.ul-center{
+    margin-left: 9rem;
+}
+
+.custom-dropdown-menu {
+    background-color: #ffffff; 
+}
+
+.custom-dropdown-menu .dropdown-item {
+    color: #000000; 
+}
+
+.custom-dropdown-menu .dropdown-item:hover,
+.custom-dropdown-menu .dropdown-item:focus {
+    background-color: #A61C3C; 
+    color: #ffffff; 
+}
+
+.navbar-nav .nav-link:focus {
+    box-shadow: 0 0 0 0.2rem rgba(166, 28, 60, 0.5);
+    border-radius: 0.5rem;
+}

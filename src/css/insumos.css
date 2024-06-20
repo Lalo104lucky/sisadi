@@ -1,0 +1,112 @@
+.table-container {
+    border: 0.1rem solid rgba(166, 28, 60, 0.1);
+    border-radius: 1rem;
+    padding: 0.1rem;
+    background-color: rgba(166, 28, 60);
+    overflow: hidden;
+}
+.custom-table {
+    background-color: white;
+    border-radius: 1rem;
+    margin-bottom: 0;
+    overflow: hidden;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+.custom-table thead {
+    background-color: rgba(166, 28, 60, 0.5);
+    color: white;
+}
+.custom-table th {
+    background-color: rgba(166, 28, 60);
+    color: white;
+    border: 0.15rem solid rgba(166, 28, 60, 0.5);
+}
+.custom-table td {
+    border-top: 0.1rem solid #d8d8d8;  /* Línea horizontal superior */
+    border-bottom: 0.1rem solid #d8d8d8;  /* Línea horizontal inferior */
+    border-left: none;  /* Sin borde izquierdo */
+    border-right: none;  /* Sin borde derecho */
+}
+
+/* Redondear esquinas de las celdas de la primera fila y última fila */
+.custom-table thead th:first-child {
+    border-top-left-radius: 1rem;
+}
+.custom-table thead th:first-child {
+    border-top-left-radius: 1rem;
+}
+.custom-table thead th:last-child {
+    border-top-right-radius: 1rem;
+}
+.custom-table tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 1rem;
+}
+.custom-table tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 1rem;
+}
+
+.custom-table td {
+    border-top: 0.1rem solid #d8d8d8;
+    border-bottom: 0.1rem solid #d8d8d8;
+    border-left: none;
+    border-right: none;
+    text-align: center; /* Centrar contenido de las celdas de acciones */
+}
+
+.custom-table .btn {
+    min-width: 4rem; /* Ancho mínimo para los botones */
+}
+
+.custom-table .btn i {
+    margin-right: 5px; /* Espacio entre el icono y el texto del botón */
+}
+
+.btn-nuevo {
+    background-color: #40BC1E; 
+    color: #ffffff; 
+    border: none; 
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.btn-nuevo:hover,
+.btn-nuevo:focus,
+.btn-nuevo:active {
+    background-color: #42A61C !important;
+}
+
+.btn-nuevo:focus {
+    box-shadow: 0 0 0 0.2rem rgba(28, 166, 46, 0.5);
+}
+
+.input-custom {
+    border: 2px solid #A61C3C; 
+}
+
+.input-custom:hover,
+.input-custom:active,
+.input-custom:focus {
+    border: 2px solid #A61C3C; 
+}
+
+
+.input-custom:focus {
+    box-shadow: 0 0 0 0.2rem rgba(166, 28, 60, 0.5); 
+}
+
+.btn-custom {
+    background-color: #BC1E43; 
+    color: #ffffff; 
+    border: none; 
+}
+
+.btn-custom:hover,
+.btn-custom:focus,
+.btn-custom:active {
+    background-color: #A61C3C !important;
+}
+
+.btn-custom:focus {
+    box-shadow: 0 0 0 0.2rem rgba(166, 28, 60, 0.5);
+}

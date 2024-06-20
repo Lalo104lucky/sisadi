@@ -1,0 +1,342 @@
+/* Color del cuerpo */	
+body {
+    background-color: #f7f7f7;
+}
+/* Logos de la cabecera */
+header {
+    padding: 1rem 0;
+}
+.logo-container {
+    max-width: 30%; 
+}
+.logo-container img {
+    max-width: 75%;
+    height: auto;
+    margin: 0; 
+}
+.logos-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.logos-wrapper img {
+    margin: 0px;
+}
+/* Letras SISADI */	
+nav h1{
+    margin: 0;
+    padding: 0;
+}
+.navbar h1 {
+    font-size: 2rem;
+    font-weight: bold;
+}
+.form-group {
+    display: flex;
+    align-items: center;
+}
+.form-group label {
+    min-width: 100px;
+    margin-right: 10px;
+}
+.form-check {
+    display: flex;
+    align-items: center;
+}
+.form-check label {
+    margin-left: 5px;
+}
+.btn-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+}
+/* inicio de Sesión */
+main {
+    margin-top: 2rem;
+}
+/* Logos del final */
+footer {
+    margin-top: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; 
+    position: relative;
+}
+
+.logos-wrapp {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 8.5rem;
+    position: relative;
+}
+
+.logo-container1,
+.logo-container2 {
+    max-width: 25%; 
+}
+
+.logo-container1 img {
+    max-width: 40%; 
+    height: auto;
+    margin: 0;
+}
+
+.logo-container2 img {
+    max-width: 100%; 
+    height: auto;
+    margin: 0;
+}
+footer::before,
+footer::after {
+    content: "";
+    display: block;
+    width: 32%;
+    height: 0.1rem; 
+    background-color: rgb(172, 172, 172);
+    position: absolute; 
+    top: 50%; 
+    transform: translateY(-50%); 
+}
+
+footer::before {
+    left: 0; 
+    margin-left: 20px; 
+}
+
+footer::after {
+    right: 0; 
+    margin-right: 20px; 
+}
+
+@media (max-width: 1024px) {
+    .logo-container1,
+    .logo-container2 {
+        max-width: 30%;
+    }
+
+    footer::before, footer::after {
+        width: 30%; 
+    }
+}
+
+@media (max-width: 768px) {
+    .logo-container1,
+    .logo-container2 {
+        max-width: 40%;
+    }
+
+    footer::before, footer::after {
+        width: 20%; 
+    }
+}
+
+@media (max-width: 480px) {
+    .logo-container1,
+    .logo-container2 {
+        max-width: 60%;
+    }
+
+    footer::before, footer::after {
+        width: 15%; 
+    }
+}
+
+.btn-custom {
+    background-color: #BC1E43; 
+    color: #ffffff; 
+    border: none; 
+}
+
+.btn-custom:hover,
+.btn-custom:focus,
+.btn-custom:active {
+    background-color: #A61C3C !important;
+}
+
+.btn-custom:focus {
+    box-shadow: 0 0 0 0.2rem rgba(166, 28, 60, 0.5);
+}
+
+.input-custom {
+    border: 2px solid #A61C3C; 
+}
+
+.input-custom:hover,
+.input-custom:active,
+.input-custom:focus {
+    border: 2px solid #A61C3C; 
+}
+
+
+.input-custom:focus {
+    box-shadow: 0 0 0 0.2rem rgba(166, 28, 60, 0.5); 
+}
+
+.ul-center{
+    margin-left: 9rem;
+}
+
+.custom-dropdown-menu {
+    background-color: #ffffff; 
+}
+
+.custom-dropdown-menu .dropdown-item {
+    color: #000000; 
+}
+
+.custom-dropdown-menu .dropdown-item:hover,
+.custom-dropdown-menu .dropdown-item:focus {
+    background-color: #A61C3C; 
+    color: #ffffff; 
+}
+
+.navbar-nav .nav-link:focus {
+    box-shadow: 0 0 0 0.2rem rgba(166, 28, 60, 0.5);
+    border-radius: 0.5rem;
+}
+
+/* Todo desde aquí es lo importante dentro del default*/
+
+.form-check {
+    margin-top: 15px;
+}
+.form-label {
+    font-weight: bold;
+}           
+
+.btn-cancel {
+    background-color: #BC1E43; 
+    color: #ffffff; 
+    border: none; 
+}
+
+.btn-cancel:hover,
+.btn-cancel:focus,
+.btn-cancel:active {
+    background-color: #A61C3C !important;
+}
+
+.btn-cancel:focus {
+    box-shadow: 0 0 0 0.2rem rgba(166, 28, 60, 0.5);
+}
+.btn-crear {
+    background-color: #40BC1E; 
+    color: #ffffff; 
+    border: none; 
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+
+.btn-crear:hover,
+.btn-crear:focus,
+.btn-crear:active {
+    background-color: #42A61C !important;
+}
+
+.btn-crear:focus {
+    box-shadow: 0 0 0 0.2rem rgba(28, 166, 46, 0.5);
+}
+
+.input-trans-custom {
+    border: 2px solid #A61C3C; 
+}
+
+.input-trans-custom:hover,
+.input-trans-custom:active,
+.input-trans-custom:focus {
+    border: 2px solid #A61C3C; 
+}
+
+
+.input-trans-custom:focus {
+    box-shadow: 0 0 0 0.2rem rgba(166, 28, 60, 0.5); 
+}
+
+.form-check-input.custom-checkbox {
+    position: absolute;
+    opacity: 0;
+}
+
+.form-check-input.custom-checkbox + .form-check-label {
+    position: relative;
+    cursor: pointer;
+}
+
+/* El cuadrado del checkbox custom */
+.form-check-input.custom-checkbox + .form-check-label::before {
+    content: '';
+    position: absolute;
+    left: -25px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    border: 2px solid #A61C3C; /* Color del borde */
+    border-radius: 4px; /* Bordes redondeados */
+    background-color: white; /* Color de fondo */
+}
+
+/* El checkmark dentro del checkbox custom */
+.form-check-input.custom-checkbox:checked + .form-check-label::after {
+    content: '';
+    position: absolute;
+    left: -20px;
+    top: 45%;
+    transform: translateY(-50%) rotate(45deg);
+    width: 7px;
+    height: 10px;
+    border: solid #A61C3C; /* Color del checkmark */
+    border-width: 0 2px 2px 0;
+}
+
+/* Hover effect */
+.form-check-input.custom-checkbox + .form-check-label:hover::before {
+    background-color: #f8d7da; /* Color de fondo al hacer hover */
+}
+/* Personaliza el select container */
+.select2-container--default .select2-selection--single {
+    background-color: #ffffff !important;
+    color: rgb(0, 0, 0) !important;
+    border: 2px solid #A61C3C !important;
+    border-radius: 0.5rem !important;
+    padding: 0.2rem !important;
+    height: auto !important; /* Ensure height is auto to fit container */
+}
+
+/* Personaliza el texto renderizado */
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    color: rgb(0, 0, 0) !important;
+}
+
+/* Personaliza la flecha del select */
+.select2-container--default .select2-selection--single .select2-selection__arrow b {
+    border-color: white transparent transparent transparent !important;
+    margin-top: 0.5rem !important; /* Adjust arrow margin if necessary */
+}
+
+/* Personaliza las opciones del dropdown */
+.select2-container--default .select2-results__option {
+    background-color: #ffffff !important;
+    color: rgb(0, 0, 0) !important;
+}
+
+/* Personaliza la opción resaltada */
+.select2-container--default .select2-results__option--highlighted {
+    background-color: #A61C3C !important;
+    color: white !important;
+}
+
+/* Elimina los bordes azules en el enfoque */
+.select2-container--default .select2-selection--single:focus,
+.select2-container--default .select2-selection--single:hover,
+.select2-container--default .select2-selection--single:active {
+    border-color: #A61C3C !important;
+    box-shadow: 0 0 0 0.2rem rgba(166, 28, 60, 0.5);
+}
+
+/* Make sure the Select2 container scales correctly */
+.select2-container {
+    width: 100% !important;
+}
