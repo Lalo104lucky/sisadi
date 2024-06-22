@@ -7,17 +7,18 @@
     <title>SISADI</title>
     <link rel="stylesheet" href="./src/css/bootstrap.min.css">
     <link rel="stylesheet" href="./src/css/transferencia_entrada.css">
-    <link rel="stylesheet" href="./src/css/select2.min.css">
+    <link rel="stylesheet" href="./src/css/insumos.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <script src="./src/js/cerrar_sesion.js"></script>
     <script src="./src/js/bootstrap.bundle.min.js"></script>
     <script src="./src/js/validacion.js"></script>
     <script src="./src/js/jquery-3.6.0.min.js"></script>
     <script src="./src/js/select2.min.js"></script>
-    <script src="./src/js/compra_directa.js"></script>
+    <script src="./src/js/tipoinsumo.js"></script>
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             $('#unitSelect').select2({
-                width: '100%'  
+                width: '100%'
             });
         });
     </script>
@@ -49,25 +50,30 @@
             <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
                 <ul class="navbar-nav mb-2 mb-lg-0 justify-content-center ul-center">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle fs-4" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle fs-4" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
                             Entradas
                         </a>
                         <ul class="dropdown-menu custom-dropdown-menu">
-                            <li><a class="dropdown-item fs-5" href="./transferencia_entrada.html">Transferencia de Entrada</a></li>
+                            <li><a class="dropdown-item fs-5" href="./transferencia_entrada.html">Transferencia de
+                                    Entrada</a></li>
                             <li><a class="dropdown-item fs-5" href="./compra_directa.html">Compra Directa</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle fs-4" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle fs-4" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
                             Salidas
                         </a>
                         <ul class="dropdown-menu custom-dropdown-menu">
                             <li><a class="dropdown-item fs-5" href="./colectivo.html">Colectivo</a></li>
-                            <li><a class="dropdown-item fs-5" href="./transferencia_salida.html">Transferencia de Salida</a></li>
+                            <li><a class="dropdown-item fs-5" href="./transferencia_salida.html">Transferencia de
+                                    Salida</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle fs-4" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle fs-4" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
                             Informes
                         </a>
                         <ul class="dropdown-menu custom-dropdown-menu">
@@ -80,7 +86,8 @@
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle fs-4" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle fs-4" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
                             Administración
                         </a>
                         <ul class="dropdown-menu custom-dropdown-menu">
@@ -96,44 +103,58 @@
             </form>
         </div>
     </nav>
-    
+
     <main class="bg-body-secondary">
         <div class="container text-center d-block justify-content-center text ">
-            <h4>COLECTIVO</h4>
+            <h4>TIPO DE INSUMOS</h4>
         </div>
     </main>
 
     <section class="d-flex justify-content-center">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-6 offset-md-2 text-center mb-3 d-flex">
+                <div class="col-md-6 offset-md-2 text-center mb-3 d-flex mt-3">
                     <h5 class="me-2">Bienvenido:</h5>
                     <h5 id="nombre-usuario"></h5>
                 </div>
-                <form class="row needs-validation" novalidate>
-                    <div class="col-md-4 offset-md-2 position-relative">
-                        <label for="folioInput" class="form-label">Folio</label>
-                        <input type="text" class="form-control input-trans-custom" id="folioInput" required>
-                    </div>
-                    <div class="col-md-4 position-relative">
-                        <label for="unitSelect" class="form-label">Especialidad</label>
-                        <select class="form-select" id="unitSelect">
-                            <option selected disabled value="">Seleccione una opción...</option>
-                            <option value="1">Unit 1</option>
-                            <option value="2">Unit 2</option>
-                            <option value="3">Unit 3</option>
-                        </select>
-                    </div>
-                    <div class="col-12 text-center mt-5">
-                        <button class="btn btn-primary btn-lg fs-5 btn-crear me-4" type="submit">Crear</button>
-                        <button class="btn btn-primary btn-lg fs-5 btn-cancel" type="button">Cancelar</button>
-                    </div>
-                </form>
+                <div class="col-md-3 text-center mt-2">
+                    <button class="btn btn-primary fs-5 btn-nuevo" type="button" data-bs-toggle="modal"
+                        data-bs-target="#modalAgregarInsumo">
+                        <i class="bi bi-plus-circle"></i> Agregar Insumo
+                    </button>
+                </div>
+
+                <div class="col-md-4 offset-md-2 position-relative">
+                    <label for="nombreInput" class="form-label">Nombre</label>
+                    <input type="text" class="form-control input-trans-custom" id="nombreInput" required>
+                </div>
+                <div class="col-md-4 position-relative">
+                    <label for="partidaInput" class="form-label">Partida</label>
+                    <input type="text" class="form-control input-trans-custom" id="partidaInput" required>
+                </div>                
+
+                <div class="col-md-8 offset-md-2 text-center mb-3 d-flex table-container mt-5">
+                    <table class="table custom-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Clave</th>
+                                <th scope="col">Descripción</th>
+                                <th scope="col">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="insumos-body">
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="col-12 text-center mt-5">
+                    <button class="btn btn-primary btn-lg fs-5 btn-crear me-4" type="submit"
+                        onclick="guardarTipoInsumo()">Crear</button>
+                    <button class="btn btn-primary btn-lg fs-5 btn-cancel" type="button">Cancelar</button>
+                </div>
             </div>
         </div>
     </section>
-    
-    
 
     <footer>
         <div class="container">
@@ -147,6 +168,36 @@
             </div>
         </div>
     </footer>
+
+
+    <div class="modal fade" id="modalAgregarInsumo" tabindex="-1" aria-labelledby="modalAgregarInsumoLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalAgregarInsumoLabel">Agregar Insumo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formAgregarInsumo" onsubmit="buscarInsumo(event)">
+                        <div class="mb-3">
+                            <label for="clave" class="form-label">Clave</label>
+                            <input type="text" class="form-control input-custom" id="clave" name="clave" required>
+                        </div>
+                    </form>
+                    <div id="resultadoInsumo">
+                        <button type="button" class="btn btn-primary fs-5 btn-nuevo"
+                            onclick="guardarNuevoTipoInsumo()">Agregar Insumo</button>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary btn-lg fs-5 btn-custom"
+                        data-bs-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </body>
 
