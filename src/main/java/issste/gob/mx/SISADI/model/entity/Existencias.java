@@ -23,8 +23,6 @@ public class Existencias {
     private Long id_existencias;
     @Column(name = "existencia", nullable = false)
     private Long existencia;
-    @Column(name = "precio", nullable = false)
-    private Double precio;
     @Column(name = "importe", nullable = false)
     private Double importe;
 

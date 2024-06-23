@@ -31,6 +31,11 @@ public class InsumoController {
         return service.register(insumoDto);
     }
 
+    @GetMapping("/clave/{clave}")
+    public ResponseEntity<ApiResponse> getByClave(@PathVariable("clave") String clave) {
+        return service.findInsumoByClave(clave);
+    }
+
     @PutMapping("/")
     public ResponseEntity<ApiResponse> update (@RequestBody InsumoDto insumoDto) {
         try {

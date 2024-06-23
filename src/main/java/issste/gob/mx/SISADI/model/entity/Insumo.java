@@ -24,14 +24,16 @@ public class Insumo {
     private Long clave;
     @Column(name = "descripcion", nullable = false)
     private String descripcion;
-    @Column(name = "unidad", nullable = false)
-    private String unidad;
+    @Column(name = "precio", nullable = false)
+    private Double precio;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
-    @OneToMany(mappedBy = "insumo", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "insumo_has_tipoinsumos", joinColumns = @JoinColumn(name = "insumo_id"),
+            inverseJoinColumns = @JoinColumn(name = "tipoinsumos_id"))
     @JsonIgnore
     private Set<TipoInsumo> tipoInsumos;
 }

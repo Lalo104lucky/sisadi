@@ -12,7 +12,6 @@ public class ExistenciasDto {
 
     private Long id_existencias;
     private Long existencia;
-    private Double precio;
     private Double importe;
 
     private Long tipoInsumo_id;

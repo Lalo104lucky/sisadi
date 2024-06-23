@@ -28,15 +28,15 @@ public class Usuario {
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "usuario")
     private Persona persona;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "usuario")
     @JsonIgnore
     private Set<Proveedor> proveedors;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "usuario")
     @JsonIgnore
     private Set<Insumo> insumos;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "usuario")
     @JsonIgnore
     private Set<Operacion> operacions;
 }

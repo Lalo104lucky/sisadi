@@ -31,7 +31,7 @@ public class Salidas {
     @JoinColumn(name = "operacion_id")
     private Operacion operacion;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "salidas", orphanRemoval = true)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "salidas", orphanRemoval = true)
     @JsonIgnore
     private Set<Control> controls;
 

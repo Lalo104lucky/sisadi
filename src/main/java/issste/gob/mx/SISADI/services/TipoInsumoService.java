@@ -13,7 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 
 @Service
@@ -43,13 +45,20 @@ public class TipoInsumoService {
 
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<ApiResponse> register (TipoInsumoDto tipoInsumoDto) {
-        Insumo insumo = insumoRepository.findById(tipoInsumoDto.getInsumo_id()).orElseThrow(() -> new RuntimeException("InsumoNotFound"));
 
         TipoInsumo tipoInsumo = new TipoInsumo();
         tipoInsumo.setId_tipoinsumo(tipoInsumoDto.getId_tipoinsumo());
         tipoInsumo.setNombre(tipoInsumoDto.getNombre());
         tipoInsumo.setPartida(tipoInsumoDto.getPartida());
-        tipoInsumo.setInsumo(insumo);
+        tipoInsumo.setUnidad(tipoInsumoDto.getUnidad());
+        Set<Insumo> insumos = new HashSet<>();
+        Set<TipoInsumo> tipoInsumos = new HashSet<>();
+        tipoInsumos.add(tipoInsumo);
+        insumoRepository.findAllById(tipoInsumoDto.getInsumo_id()).forEach(insumo -> {
+            insumo.setTipoInsumos(tipoInsumos);
+            insumos.add(insumo);
+        });
+        tipoInsumo.setInsumos(insumos);
 
         repository.save(tipoInsumo);
 
@@ -59,12 +68,19 @@ public class TipoInsumoService {
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<ApiResponse> update(TipoInsumoDto tipoInsumoDto){
         TipoInsumo foundTipoInsumo = repository.findById(tipoInsumoDto.getId_tipoinsumo()).orElseThrow(() -> new RuntimeException("TipoInsumoNotFound"));
-        Insumo foundInsumo = insumoRepository.findById(tipoInsumoDto.getInsumo_id()).orElseThrow(() -> new RuntimeException("InsumoNotFound"));
 
         foundTipoInsumo.setId_tipoinsumo(tipoInsumoDto.getId_tipoinsumo());
         foundTipoInsumo.setNombre(tipoInsumoDto.getNombre());
         foundTipoInsumo.setPartida(tipoInsumoDto.getPartida());
-        foundTipoInsumo.setInsumo(foundInsumo);
+        foundTipoInsumo.setUnidad(tipoInsumoDto.getUnidad());
+        Set<Insumo> insumos = new HashSet<>();
+        Set<TipoInsumo> tipoInsumos = new HashSet<>();
+        tipoInsumos.add(foundTipoInsumo);
+        insumoRepository.findAllById(tipoInsumoDto.getInsumo_id()).forEach(insumo -> {
+            insumo.setTipoInsumos(tipoInsumos);
+            insumos.add(insumo);
+        });
+        foundTipoInsumo.setInsumos(insumos);
 
         repository.saveAndFlush(foundTipoInsumo);
 

@@ -46,7 +46,6 @@ public class ExistenciasService {
 
         Existencias existencias = new Existencias();
         existencias.setId_existencias(existenciasDto.getId_existencias());
-        existencias.setPrecio(existenciasDto.getPrecio());
         existencias.setExistencia(existenciasDto.getExistencia());
         existencias.setImporte(existenciasDto.getImporte());
         existencias.setTipoInsumo(foundTipoInsumo);
@@ -64,7 +63,6 @@ public class ExistenciasService {
         foundExistencia.setId_existencias(existenciasDto.getId_existencias());
         foundExistencia.setImporte(existenciasDto.getImporte());
         foundExistencia.setExistencia(existenciasDto.getExistencia());
-        foundExistencia.setPrecio(existenciasDto.getPrecio());
         foundExistencia.setTipoInsumo(foundTipoInsumo);
 
         repository.saveAndFlush(foundExistencia);

@@ -40,11 +40,11 @@ public class Operacion {
     @JoinColumn(name = "existencias_id")
     private Existencias existencias;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "operacion", orphanRemoval = true)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "operacion", orphanRemoval = true)
     @JsonIgnore
     private Set<Entradas> entradas;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "operacion", orphanRemoval = true)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "operacion", orphanRemoval = true)
     @JsonIgnore
     private Set<Salidas> salidas;
 }
