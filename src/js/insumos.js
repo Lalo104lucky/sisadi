@@ -66,7 +66,7 @@ async function guardarNuevoInsumo() {
     try {
         const clave = document.getElementById('clave').value;
         const descripcion = document.getElementById('descripcion').value;
-        const unidad = document.getElementById('unidad').value;
+        const precio = document.getElementById('precio').value;
 
         const authToken = localStorage.getItem('authToken');
         if (!authToken) {
@@ -79,7 +79,7 @@ async function guardarNuevoInsumo() {
         const nuevoInsumo = {
             clave: clave,
             descripcion: descripcion,
-            unidad: unidad,
+            precio: precio,
             usuario_id: id_usuario,
         };
 
@@ -131,7 +131,6 @@ function parseJwt(token) {
     }
 }
 
-
 async function editarInsumo(id_insumo) {
     try {
         const authToken = localStorage.getItem('authToken');
@@ -162,8 +161,9 @@ async function editarInsumo(id_insumo) {
         // Rellenar el formulario del modal con los datos del insumo
         document.getElementById('editarClave').value = insumoData.clave;
         document.getElementById('editarDescripcion').value = insumoData.descripcion;
-        document.getElementById('editarUnidad').value = insumoData.unidad;
+        document.getElementById('editarPrecio').value = insumoData.precio;
         document.getElementById('editarIdInsumo').value = id_insumo;
+        precioOriginal = insumoData.precio;
 
         // Mostrar el modal
         $('#modalEditarInsumo').modal('show');
@@ -177,25 +177,50 @@ async function guardarEdicionInsumo() {
         const id_insumo = document.getElementById('editarIdInsumo').value;
         const clave = document.getElementById('editarClave').value;
         const descripcion = document.getElementById('editarDescripcion').value;
-        const unidad = document.getElementById('editarUnidad').value;
+        const nuevoPrecio = parseFloat(document.getElementById('editarPrecio').value); // Nuevo precio ingresado por el usuario
 
         const authToken = localStorage.getItem('authToken');
         if (!authToken) {
             throw new Error('No se encontró el token de autenticación');
         }
 
-        // Decodificar el authToken para obtener usuario y id_usuario
         const { id_usuario } = parseJwt(authToken);
+
+        // Obtener el insumo actual para comparar el precio original
+        const response = await fetch(`http://localhost:8081/sisadi/insumo/${id_insumo}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${authToken}`
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('Error al obtener el insumo');
+        }
+
+        const insumoActual = await response.json();
+
+        if (!insumoActual || !insumoActual.data) {
+            throw new Error('Datos de insumo no válidos');
+        }
+
+        const precioOriginal = parseFloat(insumoActual.data.precio);
+
+        // Validar si el precio ha cambiado
+        let precio = precioOriginal;
+        if (nuevoPrecio !== precioOriginal) {
+            precio = nuevoPrecio * 1.16; // Aplicar el incremento solo si el precio ha cambiado
+        }
 
         const insumoEditado = {
             id_insumo: parseInt(id_insumo, 10),
             clave: clave,
             descripcion: descripcion,
-            unidad: unidad,
+            precio: precio,
             usuario_id: id_usuario,
         };
 
-        const response = await fetch(`http://localhost:8081/sisadi/insumo/`, {
+        const responseEditar = await fetch(`http://localhost:8081/sisadi/insumo/`, {
             method: 'PUT',
             headers: {
                 'Authorization': `Bearer ${authToken}`,
@@ -204,7 +229,7 @@ async function guardarEdicionInsumo() {
             body: JSON.stringify(insumoEditado),
         });
 
-        if (!response.ok) {
+        if (!responseEditar.ok) {
             throw new Error('Error al editar el insumo');
         }
 
@@ -218,6 +243,7 @@ async function guardarEdicionInsumo() {
         console.error('Hubo un problema al intentar editar el insumo:', error);
     }
 }
+
 
 async function eliminarInsumo(id_insumo) {
     try {
@@ -258,7 +284,7 @@ function mostrarNombrePersona(nombre) {
 function limpiarModalNuevoInsumo() {
     document.getElementById('clave').value = '';
     document.getElementById('descripcion').value = '';
-    document.getElementById('unidad').value = '';
+    document.getElementById('precio').value = '';
 }
 
 function llenarTabla(insumos) {
@@ -270,6 +296,7 @@ function llenarTabla(insumos) {
         tr.innerHTML = `
             <td>${insumo.clave}</td>
             <td>${insumo.descripcion}</td>
+            <td>${insumo.precio.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })}</td>
             <td>
                 <button class="btn btn-warning btn-sm me-3" onclick="editarInsumo(${insumo.id_insumo})"><i class="bi bi-pencil"></i> Editar</button>
                 <button class="btn btn-danger btn-sm" onclick="eliminarInsumo(${insumo.id_insumo})"><i class="bi bi-trash"></i> Eliminar</button>

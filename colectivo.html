@@ -12,15 +12,8 @@
     <script src="./src/js/bootstrap.bundle.min.js"></script>
     <script src="./src/js/validacion.js"></script>
     <script src="./src/js/jquery-3.6.0.min.js"></script>
-    <script src="./src/js/select2.min.js"></script>
-    <script src="./src/js/compra_directa.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('#unitSelect').select2({
-                width: '100%'  
-            });
-        });
-    </script>
+    <script src="./src/js/quagga.min.js"></script>
+    <script src="./src/js/colectivo.js"></script>
 </head>
 
 <body>
@@ -71,12 +64,11 @@
                             Informes
                         </a>
                         <ul class="dropdown-menu custom-dropdown-menu">
-                            <li><a class="dropdown-item fs-5" href="#">Entradas</a></li>
-                            <li><a class="dropdown-item fs-5" href="#">Salidas</a></li>
-                            <li><a class="dropdown-item fs-5" href="#">Existencias</a></li>
-                            <li><a class="dropdown-item fs-5" href="#">Tablero de Control</a></li>
-                            <li><a class="dropdown-item fs-5" href="#">Colectivos</a></li>
-                            <li><a class="dropdown-item fs-5" href="#">Entrada y Salidas</a></li>
+                            <li><a class="dropdown-item fs-5" href="./entradas.html">Entradas</a></li>
+                            <li><a class="dropdown-item fs-5" href="./salidas.html">Salidas</a></li>
+                            <li><a class="dropdown-item fs-5" href="./existencias.html">Existencias</a></li>
+                            <li><a class="dropdown-item fs-5" href="./tablero_de_control.html">Tablero de Control</a></li>
+                            <li><a class="dropdown-item fs-5" href="./entradas_salidas.html">Entrada y Salidas</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
@@ -115,18 +107,9 @@
                         <label for="folioInput" class="form-label">Folio</label>
                         <input type="text" class="form-control input-trans-custom" id="folioInput" required>
                     </div>
-                    <div class="col-md-4 position-relative">
-                        <label for="unitSelect" class="form-label">Especialidad</label>
-                        <select class="form-select" id="unitSelect">
-                            <option selected disabled value="">Seleccione una opción...</option>
-                            <option value="1">Unit 1</option>
-                            <option value="2">Unit 2</option>
-                            <option value="3">Unit 3</option>
-                        </select>
-                    </div>
-                    <div class="col-12 text-center mt-5">
-                        <button class="btn btn-primary btn-lg fs-5 btn-crear me-4" type="submit">Crear</button>
-                        <button class="btn btn-primary btn-lg fs-5 btn-cancel" type="button">Cancelar</button>
+                    <div class="col-6 text-center mt-4">
+                        <button class="btn btn-primary btn-lg fs-5 btn-crear me-4" type="button" onclick="iniciarLector()">Crear</button>
+                        <button class="btn btn-primary btn-lg fs-5 btn-cancel" type="button" onclick="detenerLector()">Cancelar</button>
                     </div>
                 </form>
             </div>

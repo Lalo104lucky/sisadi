@@ -44,15 +44,6 @@ async function obtenerColectivo() {
             mostrarNombrePersona('Usuario no encontrado');
         }
 
-        const response = await fetch('http://localhost:8081/sisadi/proveedor/');
-        if (!response.ok) {
-            throw new Error('El servidor no está respondiendo ' + response.statusText);
-        }
-        const data = await response.json();
-
-        const proveedorUsuario = data.data.filter(proveedor => proveedor.usuario.id_usuario === id_usuario);
-
-        llenarTabla(proveedorUsuario);
     } catch (error) {
         console.error('Hubo un problema con la solicitud:', error);
     }
@@ -86,6 +77,39 @@ function mostrarNombrePersona(nombre) {
     if (nombreElemento) {
         nombreElemento.textContent = nombre;
     }
+}
+
+// Función para iniciar el lector de códigos de barras
+function iniciarLector() {
+    Quagga.init({
+        inputStream: {
+            name: "Live",
+            type: "LiveStream",
+            constraints: {
+                width: 640,
+                height: 480,
+                facingMode: "environment" // Para usar la cámara trasera (en dispositivos con múltiples cámaras)
+            }
+        },
+        decoder: {
+            readers: ["ean_reader"] // Configurar para leer códigos EAN
+        }
+    }, function(err) {
+        if (err) {
+            console.error(err);
+            return;
+        }
+        Quagga.start();
+        Quagga.onDetected(function(result) {
+            const codigoBarras = result.codeResult.code;
+            document.getElementById('folioInput').value = codigoBarras;
+            Quagga.stop();
+        });
+    });
+}
+
+function detenerLector() {
+    Quagga.stop();
 }
 
 document.addEventListener('DOMContentLoaded', obtenerColectivo);

@@ -77,12 +77,11 @@
                             Informes
                         </a>
                         <ul class="dropdown-menu custom-dropdown-menu">
-                            <li><a class="dropdown-item fs-5" href="#">Entradas</a></li>
-                            <li><a class="dropdown-item fs-5" href="#">Salidas</a></li>
-                            <li><a class="dropdown-item fs-5" href="#">Existencias</a></li>
-                            <li><a class="dropdown-item fs-5" href="#">Tablero de Control</a></li>
-                            <li><a class="dropdown-item fs-5" href="#">Colectivos</a></li>
-                            <li><a class="dropdown-item fs-5" href="#">Entrada y Salidas</a></li>
+                            <li><a class="dropdown-item fs-5" href="./entradas.html">Entradas</a></li>
+                            <li><a class="dropdown-item fs-5" href="./salidas.html">Salidas</a></li>
+                            <li><a class="dropdown-item fs-5" href="./existencias.html">Existencias</a></li>
+                            <li><a class="dropdown-item fs-5" href="./tablero_de_control.html">Tablero de Control</a></li>
+                            <li><a class="dropdown-item fs-5" href="./entradas_salidas.html">Entrada y Salidas</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
@@ -130,6 +129,7 @@
                             <tr>
                                 <th scope="col">Clave</th>
                                 <th scope="col">Descripción</th>
+                                <th scope="col">Precio</th>
                                 <th scope="col">Acciones</th>
                             </tr>
                         </thead>
@@ -176,8 +176,8 @@
                                 required>
                         </div>
                         <div class="mb-3">
-                            <label for="unidad" class="form-label">Unidad</label>
-                            <input type="text" class="form-control input-custom" id="unidad" name="unidad" required>
+                            <label for="precio" class="form-label">Precio</label>
+                            <input type="text" class="form-control input-custom" id="precio" name="precio" required>
                         </div>
                     </form>
                 </div>
@@ -213,8 +213,8 @@
                             <input type="text" class="form-control input-custom" id="editarDescripcion" required>
                         </div>
                         <div class="mb-3">
-                            <label for="editarUnidad" class="form-label">Unidad</label>
-                            <input type="text" class="form-control input-custom" id="editarUnidad" required>
+                            <label for="editarPrecio" class="form-label">Precio</label>
+                            <input type="text" class="form-control input-custom" id="editarPrecio" required>
                         </div>
                         <input type="hidden" id="editarIdInsumo">
                     </form>

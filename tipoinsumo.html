@@ -77,12 +77,11 @@
                             Informes
                         </a>
                         <ul class="dropdown-menu custom-dropdown-menu">
-                            <li><a class="dropdown-item fs-5" href="#">Entradas</a></li>
-                            <li><a class="dropdown-item fs-5" href="#">Salidas</a></li>
-                            <li><a class="dropdown-item fs-5" href="#">Existencias</a></li>
-                            <li><a class="dropdown-item fs-5" href="#">Tablero de Control</a></li>
-                            <li><a class="dropdown-item fs-5" href="#">Colectivos</a></li>
-                            <li><a class="dropdown-item fs-5" href="#">Entrada y Salidas</a></li>
+                            <li><a class="dropdown-item fs-5" href="./entradas.html">Entradas</a></li>
+                            <li><a class="dropdown-item fs-5" href="./salidas.html">Salidas</a></li>
+                            <li><a class="dropdown-item fs-5" href="./existencias.html">Existencias</a></li>
+                            <li><a class="dropdown-item fs-5" href="./tablero_de_control.html">Tablero de Control</a></li>
+                            <li><a class="dropdown-item fs-5" href="./entradas_salidas.html">Entrada y Salidas</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
@@ -124,14 +123,18 @@
                     </button>
                 </div>
 
-                <div class="col-md-4 offset-md-2 position-relative">
+                <div class="col-md-4 offset-md-2 position-relative mb-3">
                     <label for="nombreInput" class="form-label">Nombre</label>
                     <input type="text" class="form-control input-trans-custom" id="nombreInput" required>
                 </div>
                 <div class="col-md-4 position-relative">
                     <label for="partidaInput" class="form-label">Partida</label>
                     <input type="text" class="form-control input-trans-custom" id="partidaInput" required>
-                </div>                
+                </div> 
+                <div class="col-md-4 offset-md-2 position-relative mt-3">
+                    <label for="unidadInput" class="form-label">Unidad</label>
+                    <input type="text" class="form-control input-trans-custom" id="unidadInput" required>
+                </div>               
 
                 <div class="col-md-8 offset-md-2 text-center mb-3 d-flex table-container mt-5">
                     <table class="table custom-table">
@@ -185,15 +188,12 @@
                             <input type="text" class="form-control input-custom" id="clave" name="clave" required>
                         </div>
                     </form>
-                    <div id="resultadoInsumo">
+                    <div class="modal-footer" id="resultadoInsumo">
+                        <button type="button" class="btn btn-primary fs-5 btn-custom"
+                        data-bs-dismiss="modal">Cancelar</button>
                         <button type="button" class="btn btn-primary fs-5 btn-nuevo"
                             onclick="guardarNuevoTipoInsumo()">Agregar Insumo</button>
-
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary btn-lg fs-5 btn-custom"
-                        data-bs-dismiss="modal">Cancelar</button>
                 </div>
             </div>
         </div>

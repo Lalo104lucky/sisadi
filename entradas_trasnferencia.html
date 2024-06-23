@@ -8,16 +8,19 @@
     <link rel="stylesheet" href="./src/css/bootstrap.min.css">
     <link rel="stylesheet" href="./src/css/transferencia_entrada.css">
     <link rel="stylesheet" href="./src/css/select2.min.css">
+    <link rel="stylesheet" href="./src/css/insumos.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <script src="./src/js/cerrar_sesion.js"></script>
     <script src="./src/js/bootstrap.bundle.min.js"></script>
     <script src="./src/js/validacion.js"></script>
     <script src="./src/js/jquery-3.6.0.min.js"></script>
+    <script src="./src/js/quagga.min.js"></script>
+    <script src="./src/js/colectivo.js"></script>
     <script src="./src/js/select2.min.js"></script>
-    <script src="./src/js/transferencia_entrada.js"></script>
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             $('#unitSelect').select2({
-                width: '100%'  
+                width: '100%'
             });
         });
     </script>
@@ -79,7 +82,8 @@
                             <li><a class="dropdown-item fs-5" href="./entradas.html">Entradas</a></li>
                             <li><a class="dropdown-item fs-5" href="./salidas.html">Salidas</a></li>
                             <li><a class="dropdown-item fs-5" href="./existencias.html">Existencias</a></li>
-                            <li><a class="dropdown-item fs-5" href="./tablero_de_control.html">Tablero de Control</a></li>
+                            <li><a class="dropdown-item fs-5" href="./tablero_de_control.html">Tablero de Control</a>
+                            </li>
                             <li><a class="dropdown-item fs-5" href="./entradas_salidas.html">Entrada y Salidas</a></li>
                         </ul>
                     </li>
@@ -104,56 +108,116 @@
 
     <main class="bg-body-secondary">
         <div class="container text-center d-block justify-content-center text ">
-            <h4>TRANSFERENCIA DE ENTRADA</h4>
+            <h4>INFORMACIÓN GENERAL</h4>
         </div>
     </main>
 
     <section class="d-flex justify-content-center">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-6 offset-md-2 text-center mb-3 d-flex">
+                <div class="col-md-4 offset-md-2 text-center mb-3 d-flex mt-3">
                     <h5 class="me-2">Bienvenido:</h5>
                     <h5 id="nombre-usuario"></h5>
                 </div>
-                <form class="row needs-validation" novalidate>
-                    <div class="col-md-4 offset-md-2 position-relative">
-                        <label for="folioInput" class="form-label">Folio</label>
-                        <input type="text" class="form-control input-trans-custom" id="folioInput" required>
-                    </div>
-                    
-                    <!--<div class="col-md-4 position-relative">
-                        <label for="searchInput" class="form-label">Buscar Unidad Origen (Nombre)</label>
-                        <input type="text" class="form-control input-trans-custom" id="searchInput" required>
-                    </div>
-                    <div class="col-md-3 offset-md-6 position-relative">
-                        <div class="form-check">
-                            <input class="form-check-input custom-checkbox" type="checkbox" id="customCheck">
-                            <label class="form-check-label" for="customCheck">
-                                Buscar por clave
-                            </label>
-                        </div>
-                    </div>
-                    <div class="col-md-4 offset-md-2 position-relative mt-3">
-                        <label for="unitSelect" class="form-label">Unidad Destino</label>
-                        <select class="form-select" id="unitSelect">
-                            <option selected disabled value="">Seleccione una opción...</option>
-                            <option value="1">Unit 1</option>
-                            <option value="2">Unit 2</option>
-                            <option value="3">Unit 3</option>
-                        </select>
-                    </div>
-                    -->
-
-                    <div class="col-md-6 text-center mt-5">
-                        <button class="btn btn-primary btn-lg fs-5 btn-crear me-4" type="submit">Crear</button>
-                        <button class="btn btn-primary btn-lg fs-5 btn-cancel" type="button">Cancelar</button>
-                    </div>
-                </form>
+                <div class="col-md-4 text-center mb-3 d-flex mt-3">
+                    <h5 class="me-2">Unidad:</h5>
+                    <h5 id="nombre-usuario"></h5>
+                </div>
+                <div class="col-md-6 offset-md-2 text-center mb-3 d-flex">
+                    <h5 class="me-2">Folio:</h5>
+                    <h5 id="nombre-usuario"></h5>
+                </div>
+                <div class="col-md-6 offset-md-2 text-center mb-3 d-flex">
+                    <h5 class="me-2">Tipo de Movimiento:</h5>
+                    <h5 id="nombre-usuario"></h5>
+                </div>
+                <div class="col-md-6 offset-md-2 text-center d-flex">
+                    <h5 class="me-2">Fecha:</h5>
+                    <h5 id="nombre-usuario"></h5>
+                </div>
             </div>
         </div>
     </section>
 
+    <main class="bg-body-secondary">
+        <div class="container text-center d-block justify-content-center text ">
+            <h4>INGRESA CLAVES AL DOCUMENTO</h4>
+        </div>
+    </main>
 
+    <section class="d-flex justify-content-center">
+        <div class="container-fluid">
+            <form class="row needs-validation" novalidate>
+                <div class="col-md-4 offset-md-2 position-relative mt-3">
+                    <label for="folioInput" class="form-label">Clave</label>
+                    <input type="text" class="form-control input-trans-custom" id="folioInput" required>
+                </div>
+                <div class="col-md-4 position-relative mt-3">
+                    <label for="unitSelect" class="form-label">Descripción</label>
+                    <select class="form-select" id="unitSelect">
+                        <option selected disabled value="">Seleccione una opción...</option>
+                        <option value="1">Unit 1</option>
+                        <option value="2">Unit 2</option>
+                        <option value="3">Unit 3</option>
+                    </select>
+                </div>
+                <div class="col-md-6 offset-md-2 position-relative">
+                    <div class="form-check">
+                        <input class="form-check-input custom-checkbox" type="checkbox" id="customCheck">
+                        <label class="form-check-label" for="customCheck">
+                            Buscar por Clave
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-4 offset-md-2 position-relative mt-3">
+                    <label for="folioInput" class="form-label">Cantidad</label>
+                    <input type="text" class="form-control input-trans-custom" id="folioInput" required>
+                </div>
+                <div class="col-md-2 text-center mt-5 d-flex">
+                    <h5 class="me-2">Precio: $</h5>
+                    <h5 id="nombre-usuario"></h5>
+                </div>
+                <div class="col-md-2 text-center mt-5 d-flex">
+                    <h5 class="me-2">Existencia:</h5>
+                    <h5 id="nombre-usuario"></h5>
+                </div>
+                <div class="col-md-4 offset-md-2 position-relative mt-5">
+                    <button class="btn btn-primary fs-5 btn-crear" type="submit">Agregar</button>
+                </div>
+
+                <div class="col-md-8 offset-md-2 text-center mb-3 d-flex table-container mt-5">
+                    <table class="table custom-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Clave</th>
+                                <th scope="col">Descripción</th>
+                                <th scope="col">Cantidad</th>
+                                <th scope="col">Precio</th>
+                                <th scope="col">Total</th>
+                                <th scope="col">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="insumos-body">
+                        </tbody>
+                        <tbody>
+                            <th scope="col">Total de claves:</th>
+                            <th scope="col"></th>
+                            <th scope="col">Total de insumos:</th>
+                            <th scope="col"></th>
+                            <th scope="col">Total:</th>
+                            <th scope="col"></th>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class=" text-center mt-5">
+                    <button class="btn btn-primary btn-lg fs-5 btn-crear me-4" type="submit">Crear</button>
+                    <button class="btn btn-primary btn-lg fs-5 btn-cancel" type="button">Cancelar</button>
+                </div>
+            </form>
+        </div>
+        </div>
+    </section>
 
     <footer>
         <div class="container">
@@ -168,7 +232,6 @@
         </div>
     </footer>
 
-    
 </body>
 
 </html>

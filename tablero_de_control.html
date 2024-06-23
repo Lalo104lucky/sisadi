@@ -13,7 +13,7 @@
     <script src="./src/js/validacion.js"></script>
     <script src="./src/js/jquery-3.6.0.min.js"></script>
     <script src="./src/js/select2.min.js"></script>
-    <script src="./src/js/compra_directa.js"></script>
+    <script src="./src/js/transferencia_entrada.js"></script>
     <script>
         $(document).ready(function() {
             $('#unitSelect').select2({
@@ -49,25 +49,30 @@
             <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
                 <ul class="navbar-nav mb-2 mb-lg-0 justify-content-center ul-center">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle fs-4" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle fs-4" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
                             Entradas
                         </a>
                         <ul class="dropdown-menu custom-dropdown-menu">
-                            <li><a class="dropdown-item fs-5" href="./transferencia_entrada.html">Transferencia de Entrada</a></li>
+                            <li><a class="dropdown-item fs-5" href="./transferencia_entrada.html">Transferencia de
+                                    Entrada</a></li>
                             <li><a class="dropdown-item fs-5" href="./compra_directa.html">Compra Directa</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle fs-4" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle fs-4" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
                             Salidas
                         </a>
                         <ul class="dropdown-menu custom-dropdown-menu">
                             <li><a class="dropdown-item fs-5" href="./colectivo.html">Colectivo</a></li>
-                            <li><a class="dropdown-item fs-5" href="./transferencia_salida.html">Transferencia de Salida</a></li>
+                            <li><a class="dropdown-item fs-5" href="./transferencia_salida.html">Transferencia de
+                                    Salida</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle fs-4" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle fs-4" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
                             Informes
                         </a>
                         <ul class="dropdown-menu custom-dropdown-menu">
@@ -79,7 +84,8 @@
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle fs-4" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle fs-4" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
                             Administración
                         </a>
                         <ul class="dropdown-menu custom-dropdown-menu">
@@ -95,10 +101,10 @@
             </form>
         </div>
     </nav>
-    
+
     <main class="bg-body-secondary">
         <div class="container text-center d-block justify-content-center text ">
-            <h4>COMPRA DIRECTA</h4>
+            <h4>TABLERO DE CONTROL</h4>
         </div>
     </main>
 
@@ -110,24 +116,16 @@
                     <h5 id="nombre-usuario"></h5>
                 </div>
                 <form class="row needs-validation" novalidate>
-                    <div class="col-md-4 offset-md-2 position-relative">
-                        <label for="folioInput" class="form-label">Folio</label>
-                        <input type="text" class="form-control input-trans-custom" id="folioInput" required>
+                    <div class="col-md-4 offset-md-2 position-relative mb-3">
+                        <label for="fechaInicialInput" class="form-label">Fecha Inicial</label>
+                        <input type="date" class="form-control input-trans-custom" id="fechaInicialInput" required>
                     </div>
                     <div class="col-md-4 position-relative">
-                        <label for="searchInput" class="form-label">Buscar Proveedor (Nombre)</label>
-                        <input type="text" class="form-control input-trans-custom" id="searchInput" required>
-                        </div>
-                    <div class="col-md-3 offset-md-6 position-relative">
-                        <div class="form-check">
-                            <input class="form-check-input custom-checkbox" type="checkbox" id="customCheck">
-                            <label class="form-check-label" for="customCheck">
-                                Buscar por RFC
-                            </label>
-                        </div>
+                        <label for="fechaFinalInput" class="form-label">Fecha Final</label>
+                        <input type="date" class="form-control input-trans-custom" id="fechaFinalInput" required>
                     </div>
                     <div class="col-md-4 offset-md-2 position-relative mt-3">
-                        <label for="unitSelect" class="form-label">Proveedor</label>
+                        <label for="unitSelect" class="form-label">Tipo de Insumo</label>
                         <select class="form-select" id="unitSelect">
                             <option selected disabled value="">Seleccione una opción...</option>
                             <option value="1">Unit 1</option>
@@ -135,15 +133,16 @@
                             <option value="3">Unit 3</option>
                         </select>
                     </div>
-                    <div class="col-6 text-center mt-5">
-                        <button class="btn btn-primary btn-lg fs-5 btn-crear me-4" type="submit">Crear</button>
-                        <button class="btn btn-primary btn-lg fs-5 btn-cancel" type="button">Cancelar</button>
+                    <div class="col-md-6 text-center mt-5">
+                        <button class="btn btn-primary btn-lg fs-5 btn-crear me-4" type="submit">Ver Infome</button>
                     </div>
                 </form>
             </div>
         </div>
     </section>
-    
+
+
+
     <footer>
         <div class="container">
             <div class="row align-items-center justify-content-center logos-wrapp">
@@ -157,6 +156,7 @@
         </div>
     </footer>
 
+    
 </body>
 
 </html>

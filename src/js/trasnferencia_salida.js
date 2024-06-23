@@ -43,16 +43,6 @@ async function obtenerTransSalida() {
         } else {
             mostrarNombrePersona('Usuario no encontrado');
         }
-
-        const response = await fetch('http://localhost:8081/sisadi/proveedor/');
-        if (!response.ok) {
-            throw new Error('El servidor no está respondiendo ' + response.statusText);
-        }
-        const data = await response.json();
-
-        const proveedorUsuario = data.data.filter(proveedor => proveedor.usuario.id_usuario === id_usuario);
-
-        llenarTabla(proveedorUsuario);
     } catch (error) {
         console.error('Hubo un problema con la solicitud:', error);
     }
