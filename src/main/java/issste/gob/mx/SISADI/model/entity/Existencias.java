@@ -26,7 +26,7 @@ public class Existencias {
     @Column(name = "importe", nullable = false)
     private Double importe;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, optional = true)
     @JoinColumn(name = "tipoinsumo_id")
     private TipoInsumo tipoInsumo;
 

@@ -17,6 +17,7 @@ public class OperacionDto {
     private String nom_operacion;
     private Timestamp fecha_inicial;
     private Timestamp fecha_final;
+    private String unidad;
 
     private Long usuario_id;
     private Long existencias_id;

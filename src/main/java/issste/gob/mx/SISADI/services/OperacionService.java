@@ -53,6 +53,7 @@ public class OperacionService {
         operacion.setFolio(operacionDto.getFolio());
         operacion.setFecha_inicial(operacionDto.getFecha_inicial());
         operacion.setFecha_final(operacionDto.getFecha_final());
+        operacion.setUnidad(operacionDto.getUnidad());
         operacion.setUsuario(foundUsuario);
         operacion.setExistencias(foundExistencia);
 
@@ -72,6 +73,7 @@ public class OperacionService {
         foundOperacion.setFolio(operacionDto.getFolio());
         foundOperacion.setFecha_inicial(operacionDto.getFecha_inicial());
         foundOperacion.setFecha_final(operacionDto.getFecha_final());
+        foundOperacion.setUnidad(operacionDto.getUnidad());
         foundOperacion.setUsuario(foundUsuario);
         foundOperacion.setExistencias(foundExistencia);
 

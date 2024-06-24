@@ -50,7 +50,6 @@ public class TipoInsumoService {
         tipoInsumo.setId_tipoinsumo(tipoInsumoDto.getId_tipoinsumo());
         tipoInsumo.setNombre(tipoInsumoDto.getNombre());
         tipoInsumo.setPartida(tipoInsumoDto.getPartida());
-        tipoInsumo.setUnidad(tipoInsumoDto.getUnidad());
         Set<Insumo> insumos = new HashSet<>();
         Set<TipoInsumo> tipoInsumos = new HashSet<>();
         tipoInsumos.add(tipoInsumo);
@@ -72,7 +71,6 @@ public class TipoInsumoService {
         foundTipoInsumo.setId_tipoinsumo(tipoInsumoDto.getId_tipoinsumo());
         foundTipoInsumo.setNombre(tipoInsumoDto.getNombre());
         foundTipoInsumo.setPartida(tipoInsumoDto.getPartida());
-        foundTipoInsumo.setUnidad(tipoInsumoDto.getUnidad());
         Set<Insumo> insumos = new HashSet<>();
         Set<TipoInsumo> tipoInsumos = new HashSet<>();
         tipoInsumos.add(foundTipoInsumo);

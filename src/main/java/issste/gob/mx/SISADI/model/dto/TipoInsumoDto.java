@@ -15,7 +15,6 @@ public class TipoInsumoDto {
     private Long id_tipoinsumo;
     private String nombre;
     private Long partida;
-    private String unidad;
 
     private Set<Long> insumo_id;
 }

@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface InsumoRepository extends JpaRepository<Insumo, Long> {
 
-    @Query(value = "SELECT i.id_insumo, i.clave, i.descripcion FROM Insumo i WHERE i.clave = :clave", nativeQuery = true)
+    @Query(value = "SELECT i.id_insumo, i.clave, i.descripcion, i.precio, i.usuario_id FROM Insumo i WHERE i.clave = :clave", nativeQuery = true)
     List<Object[]> findByClave(@Param("clave") String clave);
 
 }

@@ -31,6 +31,8 @@ public class Operacion {
     @Column(name = "fecha_final")
     @Temporal(TemporalType.TIMESTAMP)
     private Timestamp fecha_final;
+    @Column(name = "unidad", nullable = false)
+    private String unidad;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "usuario_id")

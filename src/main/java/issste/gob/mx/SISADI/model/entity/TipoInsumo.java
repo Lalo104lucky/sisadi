@@ -24,8 +24,6 @@ public class TipoInsumo {
     private String nombre;
     @Column(name = "partida", nullable = true)
     private Long partida;
-    @Column(name = "unidad", nullable = false)
-    private String unidad;
 
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "tipoInsumos")
     private Set<Insumo> insumos;

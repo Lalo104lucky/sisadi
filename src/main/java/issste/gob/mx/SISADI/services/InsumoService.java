@@ -95,6 +95,12 @@ public class InsumoService {
             insumo.setId_insumo((Long) obj[0]);
             insumo.setClave((Long) obj[1]);
             insumo.setDescripcion((String) obj[2]);
+            insumo.setPrecio((Double) obj[3]);
+
+            Usuario usuario = new Usuario();
+            usuario.setId_usuario((Long) obj[4]);
+
+            insumo.setUsuario(usuario);
 
             return insumo;
         }).toList();
