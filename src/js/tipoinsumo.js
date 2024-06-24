@@ -127,11 +127,9 @@ async function guardarNuevoTipoInsumo() {
 async function guardarTipoInsumo() {
     const nombreInput = document.getElementById('nombreInput');
     const partidaInput = document.getElementById('partidaInput');
-    const unidadInput = document.getElementById('unidadInput');
 
     const nombre = nombreInput.value;
     const partida = partidaInput.value;
-    const unidad = unidadInput.value;
 
     if (!nombre ) {
         alert('Por favor, ingrese el nombre.');
@@ -150,7 +148,6 @@ async function guardarTipoInsumo() {
     const payload = {
         nombre: nombre,
         partida: partida,
-        unidad: unidad,
         insumo_id: insumoIds.map(id => parseInt(id, 10))
     };
 
@@ -178,7 +175,6 @@ async function guardarTipoInsumo() {
         // Limpiar los campos y la tabla
         nombreInput.value = '';
         partidaInput.value = '';
-        unidadInput.value = '';
         document.getElementById('insumos-body').innerHTML = '';
     } catch (error) {
         console.error('Hubo un problema con la solicitud:', error);

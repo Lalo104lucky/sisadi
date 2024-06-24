@@ -12,15 +12,9 @@
     <script src="./src/js/bootstrap.bundle.min.js"></script>
     <script src="./src/js/validacion.js"></script>
     <script src="./src/js/jquery-3.6.0.min.js"></script>
-    <script src="./src/js/select2.min.js"></script>
+    <script src="./src/js/quagga.min.js"></script>
     <script src="./src/js/transferencia_entrada.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('#unitSelect').select2({
-                width: '100%'  
-            });
-        });
-    </script>
+
 </head>
 
 <body>
@@ -79,7 +73,8 @@
                             <li><a class="dropdown-item fs-5" href="./entradas.html">Entradas</a></li>
                             <li><a class="dropdown-item fs-5" href="./salidas.html">Salidas</a></li>
                             <li><a class="dropdown-item fs-5" href="./existencias.html">Existencias</a></li>
-                            <li><a class="dropdown-item fs-5" href="./tablero_de_control.html">Tablero de Control</a></li>
+                            <li><a class="dropdown-item fs-5" href="./tablero_de_control.html">Tablero de Control</a>
+                            </li>
                             <li><a class="dropdown-item fs-5" href="./entradas_salidas.html">Entrada y Salidas</a></li>
                         </ul>
                     </li>
@@ -120,7 +115,7 @@
                         <label for="folioInput" class="form-label">Folio</label>
                         <input type="text" class="form-control input-trans-custom" id="folioInput" required>
                     </div>
-                    
+
                     <!--<div class="col-md-4 position-relative">
                         <label for="searchInput" class="form-label">Buscar Unidad Origen (Nombre)</label>
                         <input type="text" class="form-control input-trans-custom" id="searchInput" required>
@@ -144,8 +139,9 @@
                     </div>
                     -->
 
-                    <div class="col-md-6 text-center mt-5">
-                        <button class="btn btn-primary btn-lg fs-5 btn-crear me-4" type="submit">Crear</button>
+                    
+                    <div class="col-6 text-center mt-4">
+                        <button class="btn btn-primary btn-lg fs-5 btn-crear me-4" type="button">Crear</button>
                         <button class="btn btn-primary btn-lg fs-5 btn-cancel" type="button">Cancelar</button>
                     </div>
                 </form>
@@ -168,7 +164,7 @@
         </div>
     </footer>
 
-    
+
 </body>
 
 </html>

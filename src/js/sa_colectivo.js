@@ -1,3 +1,4 @@
+// Funciones para obtener datos del usuario y colectivo
 async function obtenerDatosUsuario(id_usuario) {
     try {
         const authToken = localStorage.getItem('authToken');
@@ -24,8 +25,7 @@ async function obtenerDatosUsuario(id_usuario) {
     }
 }
 
-// Aún le falta a este 
-async function obtenerTransEntrada() {
+async function obtenerColectivo() {
     try {
         const authToken = localStorage.getItem('authToken');
         if (!authToken) {
@@ -40,6 +40,18 @@ async function obtenerTransEntrada() {
             const nombrePersona = `${datosUsuario.persona.nombre} ${datosUsuario.persona.apellido_p} ${datosUsuario.persona.apellido_m}`;
             // Mostrar el nombre de la persona en el HTML
             mostrarNombrePersona(nombrePersona);
+
+            // Mostrar datos del colectivo
+            const folio = localStorage.getItem('folio') || 'No definido';
+            const unidad = localStorage.getItem('unidad') || 'No definido';
+            const tipoMovimiento = localStorage.getItem('tipoMovimiento') || 'No definido';
+            const fecha = localStorage.getItem('fecha') || 'No definida';
+
+            // Mostrar los datos en los elementos HTML correspondientes
+            document.getElementById('nombre-unidad').textContent = unidad;
+            document.getElementById('nombre-folio').textContent = folio;
+            document.getElementById('nombre-tipo-movimiento').textContent = tipoMovimiento;
+            document.getElementById('nombre-fecha').textContent = fecha;
         } else {
             mostrarNombrePersona('Usuario no encontrado');
         }
@@ -80,50 +92,5 @@ function mostrarNombrePersona(nombre) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    obtenerTransEntrada();
-
-    
-    // Enfocar automáticamente en el campo de entrada cuando la página se carga
-    const folioInput = document.getElementById('folioInput');
-    if (folioInput) {
-        folioInput.focus();
-    }
-
-    // Funciones para iniciar y detener el escaneo
-    function iniciarLector() {
-        if (folioInput) {
-            folioInput.focus();
-        }
-    }
-
-    function detenerLector() {
-        console.log("Lector detenido.");
-    }
-
-    // Capturar el valor del folioInput y redirigir
-    function redirigir() {
-        if (folioInput) {
-            const folio = folioInput.value;
-            if (folio) {
-                localStorage.setItem('folio', folio);
-                localStorage.setItem('unidad', 'HAE 139 "CENTENARIO DE LA REVOLUCIÓN MEXICANA"');
-                localStorage.setItem('tipoMovimiento', 'TRANSFERENCIA DE ENTRADA');
-                localStorage.setItem('fecha', new Date().toLocaleDateString('es-MX', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }));
-                window.location.href = 'entradas_transferencia.html';
-            } else {
-                alert('Folio no puede estar vacío');
-            }
-        }
-    }
-
-    // Agregar event listeners a los botones
-    const btnCrear = document.querySelector('.btn-crear');
-    const btnCancel = document.querySelector('.btn-cancel');
-
-    if (btnCrear && btnCancel) {
-        btnCrear.addEventListener('click', redirigir);
-        btnCancel.addEventListener('click', detenerLector);
-    } else {
-        console.error('No se encontraron los botones para agregar los event listeners');
-    }
+    obtenerColectivo();
 });

@@ -1,3 +1,4 @@
+// Funciones para obtener datos del usuario y colectivo
 async function obtenerDatosUsuario(id_usuario) {
     try {
         const authToken = localStorage.getItem('authToken');
@@ -24,7 +25,6 @@ async function obtenerDatosUsuario(id_usuario) {
     }
 }
 
-// Aún le falta a este 
 async function obtenerColectivo() {
     try {
         const authToken = localStorage.getItem('authToken');
@@ -53,7 +53,7 @@ function parseJwt(token) {
     try {
         const base64Url = token.split('.')[1];
         const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-        const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+        const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
             return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
         }).join(''));
 
@@ -79,37 +79,93 @@ function mostrarNombrePersona(nombre) {
     }
 }
 
-// Función para iniciar el lector de códigos de barras
-function iniciarLector() {
-    Quagga.init({
-        inputStream: {
-            name: "Live",
-            type: "LiveStream",
-            constraints: {
-                width: 640,
-                height: 480,
-                facingMode: "environment" // Para usar la cámara trasera (en dispositivos con múltiples cámaras)
+document.addEventListener('DOMContentLoaded', () => {
+    obtenerColectivo();
+
+    // Enfocar automáticamente en el campo de entrada cuando la página se carga
+    const folioInput = document.getElementById('folioInput');
+    if (folioInput) {
+        folioInput.focus();
+    }
+
+    // Funciones para iniciar y detener el escaneo
+    function iniciarLector() {
+        if (folioInput) {
+            folioInput.focus();
+        }
+    }
+
+    function detenerLector() {
+        console.log("Lector detenido.");
+    }
+
+    // Capturar el valor del folioInput y redirigir
+    function redirigir() {
+        if (folioInput) {
+            const folio = folioInput.value;
+            if (folio) {
+                localStorage.setItem('folio', folio);
+                localStorage.setItem('unidad', 'HAE 139 "CENTENARIO DE LA REVOLUCIÓN MEXICANA"');
+                localStorage.setItem('tipoMovimiento', 'COLECTIVO');
+                localStorage.setItem('fecha', new Date().toLocaleDateString('es-MX', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }));
+                window.location.href = 'salidas_colectivo.html';
+            } else {
+                console.error('Folio no puede estar vacío');
             }
-        },
-        decoder: {
-            readers: ["ean_reader"] // Configurar para leer códigos EAN
         }
-    }, function(err) {
-        if (err) {
-            console.error(err);
-            return;
-        }
-        Quagga.start();
-        Quagga.onDetected(function(result) {
-            const codigoBarras = result.codeResult.code;
-            document.getElementById('folioInput').value = codigoBarras;
-            Quagga.stop();
+    }
+
+    // Agregar event listeners a los botones
+    const btnCrear = document.querySelector('.btn-crear');
+    const btnCancel = document.querySelector('.btn-cancel');
+
+    if (btnCrear && btnCancel) {
+        btnCrear.addEventListener('click', redirigir);
+        btnCancel.addEventListener('click', detenerLector);
+    } else {
+        console.error('No se encontraron los botones para agregar los event listeners');
+    }
+
+    /**
+     //  Funciones para iniciar y detener Quagga
+    function iniciarLector() {
+        Quagga.init({
+            inputStream: {
+                name: "Live",
+                type: "LiveStream",
+                target: document.querySelector('#camera')
+            },
+            decoder: {
+                readers: ["ean_reader"]
+            }
+        }, function (err) {
+            if (err) {
+                console.log(err);
+                return;
+            }
+            console.log("Initialization finished. Ready to start");
+            Quagga.start();
         });
-    });
-}
 
-function detenerLector() {
-    Quagga.stop();
-}
+        Quagga.onDetected(function (data) {
+            console.log(data.codeResult.code);
+            document.getElementById('folioInput').value = data.codeResult.code; // Asigna el código al campo folioInput
+        });
+    }
 
-document.addEventListener('DOMContentLoaded', obtenerColectivo);
+    function detenerLector() {
+        Quagga.stop();
+    }
+
+    // Agregar event listeners a los botones
+    const btnCrear = document.querySelector('.btn-crear');
+    const btnCancel = document.querySelector('.btn-cancel');
+
+    if (btnCrear && btnCancel) {
+        btnCrear.addEventListener('click', iniciarLector);
+        btnCancel.addEventListener('click', detenerLector);
+    } else {
+        console.error('No se encontraron los botones para agregar los event listeners');
+    }
+     */
+});

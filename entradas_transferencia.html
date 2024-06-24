@@ -15,7 +15,7 @@
     <script src="./src/js/validacion.js"></script>
     <script src="./src/js/jquery-3.6.0.min.js"></script>
     <script src="./src/js/quagga.min.js"></script>
-    <script src="./src/js/colectivo.js"></script>
+    <script src="./src/js/en_transferencia.js"></script>
     <script src="./src/js/select2.min.js"></script>
     <script>
         $(document).ready(function () {
@@ -121,19 +121,19 @@
                 </div>
                 <div class="col-md-4 text-center mb-3 d-flex mt-3">
                     <h5 class="me-2">Unidad:</h5>
-                    <h5 id="nombre-usuario"></h5>
+                    <h5 id="nombre-unidad"></h5>
                 </div>
                 <div class="col-md-6 offset-md-2 text-center mb-3 d-flex">
                     <h5 class="me-2">Folio:</h5>
-                    <h5 id="nombre-usuario"></h5>
+                    <h5 id="nombre-folio"></h5>
                 </div>
                 <div class="col-md-6 offset-md-2 text-center mb-3 d-flex">
                     <h5 class="me-2">Tipo de Movimiento:</h5>
-                    <h5 id="nombre-usuario"></h5>
+                    <h5 id="nombre-tipo-movimiento"></h5>
                 </div>
                 <div class="col-md-6 offset-md-2 text-center d-flex">
                     <h5 class="me-2">Fecha:</h5>
-                    <h5 id="nombre-usuario"></h5>
+                    <h5 id="nombre-fecha"></h5>
                 </div>
             </div>
         </div>
@@ -146,76 +146,72 @@
     </main>
 
     <section class="d-flex justify-content-center">
-        <div class="container-fluid">
-            <form class="row needs-validation" novalidate>
-                <div class="col-md-4 offset-md-2 position-relative mt-3">
-                    <label for="folioInput" class="form-label">Clave</label>
-                    <input type="text" class="form-control input-trans-custom" id="folioInput" required>
+        <div class="row container-fluid">
+            <div class="col-md-4 offset-md-2 position-relative mt-3">
+                <label for="folioInput" class="form-label">Clave</label>
+                <input type="text" class="form-control input-trans-custom" id="folioInput" required>
+            </div>
+            <div class="col-md-4 position-relative mt-3">
+                <label for="unitSelect" class="form-label">Descripción</label>
+                <select class="form-select" id="unitSelect">
+                    <option selected disabled value="">Seleccione una opción...</option>
+                </select>
+            </div>
+            <div class="col-md-6 offset-md-2 position-relative">
+                <div class="form-check">
+                    <input class="form-check-input custom-checkbox" type="checkbox" id="customCheck">
+                    <label class="form-check-label" for="customCheck">
+                        Buscar por Clave
+                    </label>
                 </div>
-                <div class="col-md-4 position-relative mt-3">
-                    <label for="unitSelect" class="form-label">Descripción</label>
-                    <select class="form-select" id="unitSelect">
-                        <option selected disabled value="">Seleccione una opción...</option>
-                        <option value="1">Unit 1</option>
-                        <option value="2">Unit 2</option>
-                        <option value="3">Unit 3</option>
-                    </select>
-                </div>
-                <div class="col-md-6 offset-md-2 position-relative">
-                    <div class="form-check">
-                        <input class="form-check-input custom-checkbox" type="checkbox" id="customCheck">
-                        <label class="form-check-label" for="customCheck">
-                            Buscar por Clave
-                        </label>
-                    </div>
-                </div>
-                <div class="col-md-4 offset-md-2 position-relative mt-3">
-                    <label for="folioInput" class="form-label">Cantidad</label>
-                    <input type="text" class="form-control input-trans-custom" id="folioInput" required>
-                </div>
-                <div class="col-md-2 text-center mt-5 d-flex">
-                    <h5 class="me-2">Precio: $</h5>
-                    <h5 id="nombre-usuario"></h5>
-                </div>
-                <div class="col-md-2 text-center mt-5 d-flex">
-                    <h5 class="me-2">Existencia:</h5>
-                    <h5 id="nombre-usuario"></h5>
-                </div>
-                <div class="col-md-4 offset-md-2 position-relative mt-5">
-                    <button class="btn btn-primary fs-5 btn-crear" type="submit">Agregar</button>
-                </div>
-
-                <div class="col-md-8 offset-md-2 text-center mb-3 d-flex table-container mt-5">
-                    <table class="table custom-table">
-                        <thead>
-                            <tr>
-                                <th scope="col">Clave</th>
-                                <th scope="col">Descripción</th>
-                                <th scope="col">Cantidad</th>
-                                <th scope="col">Precio</th>
-                                <th scope="col">Total</th>
-                                <th scope="col">Acción</th>
-                            </tr>
-                        </thead>
-                        <tbody id="insumos-body">
-                        </tbody>
-                        <tbody>
+            </div>
+            <div class="col-md-4 offset-md-2 position-relative mt-3">
+                <label for="cantidadInput" class="form-label">Cantidad</label>
+                <input type="text" class="form-control input-trans-custom" id="cantidadInput" required>
+            </div>
+            <div class="col-md-2 text-center mt-5 d-flex">
+                <h5 class="me-2">Precio: $</h5>
+                <h5 id="precioInsumo"></h5>
+            </div>
+            <!--<div class="col-md-2 text-center mt-5 d-flex">
+                <h5 class="me-2">Existencia:</h5>
+                <h5 id="existenciaInsumo"></h5>
+            </div>-->
+            <div class="col-md-4 offset-md-2 position-relative mt-5">
+                <button id="agregarInsumo" class="btn btn-primary fs-5 btn-crear" type="button">Agregar</button>
+            </div>
+    
+            <div class="col-md-8 offset-md-2 text-center mb-3 d-flex table-container mt-5">
+                <table class="table custom-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Clave</th>
+                            <th scope="col">Descripción</th>
+                            <th scope="col">Cantidad</th>
+                            <th scope="col">Precio</th>
+                            <th scope="col">Total</th>
+                            <th scope="col">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="insumos-body">
+                    </tbody>
+                    <tbody>
+                        <tr>
                             <th scope="col">Total de claves:</th>
-                            <th scope="col"></th>
+                            <th scope="col" id="total-claves-cell">0</th>
                             <th scope="col">Total de insumos:</th>
-                            <th scope="col"></th>
-                            <th scope="col">Total:</th>
-                            <th scope="col"></th>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class=" text-center mt-5">
-                    <button class="btn btn-primary btn-lg fs-5 btn-crear me-4" type="submit">Crear</button>
-                    <button class="btn btn-primary btn-lg fs-5 btn-cancel" type="button">Cancelar</button>
-                </div>
-            </form>
-        </div>
+                            <th scope="col" id="total-insumos-cell">0</th>
+                            <th scope="col">Total: $</th>
+                            <th scope="col" id="total-general-cell">0.00</th>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+    
+            <div class=" text-center mt-5">
+                <button class="btn btn-primary btn-lg fs-5 btn-crear me-4" type="submit">Crear</button>
+                <button class="btn btn-primary btn-lg fs-5 btn-cancel" type="button">Cancelar</button>
+            </div>
         </div>
     </section>
 

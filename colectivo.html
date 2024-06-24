@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>SISADI</title>
     <link rel="stylesheet" href="./src/css/bootstrap.min.css">
     <link rel="stylesheet" href="./src/css/transferencia_entrada.css">
@@ -14,6 +15,7 @@
     <script src="./src/js/jquery-3.6.0.min.js"></script>
     <script src="./src/js/quagga.min.js"></script>
     <script src="./src/js/colectivo.js"></script>
+    
 </head>
 
 <body>
@@ -42,37 +44,44 @@
             <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
                 <ul class="navbar-nav mb-2 mb-lg-0 justify-content-center ul-center">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle fs-4" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle fs-4" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
                             Entradas
                         </a>
                         <ul class="dropdown-menu custom-dropdown-menu">
-                            <li><a class="dropdown-item fs-5" href="./transferencia_entrada.html">Transferencia de Entrada</a></li>
+                            <li><a class="dropdown-item fs-5" href="./transferencia_entrada.html">Transferencia de
+                                    Entrada</a></li>
                             <li><a class="dropdown-item fs-5" href="./compra_directa.html">Compra Directa</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle fs-4" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle fs-4" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
                             Salidas
                         </a>
                         <ul class="dropdown-menu custom-dropdown-menu">
                             <li><a class="dropdown-item fs-5" href="./colectivo.html">Colectivo</a></li>
-                            <li><a class="dropdown-item fs-5" href="./transferencia_salida.html">Transferencia de Salida</a></li>
+                            <li><a class="dropdown-item fs-5" href="./transferencia_salida.html">Transferencia de
+                                    Salida</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle fs-4" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle fs-4" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
                             Informes
                         </a>
                         <ul class="dropdown-menu custom-dropdown-menu">
                             <li><a class="dropdown-item fs-5" href="./entradas.html">Entradas</a></li>
                             <li><a class="dropdown-item fs-5" href="./salidas.html">Salidas</a></li>
                             <li><a class="dropdown-item fs-5" href="./existencias.html">Existencias</a></li>
-                            <li><a class="dropdown-item fs-5" href="./tablero_de_control.html">Tablero de Control</a></li>
+                            <li><a class="dropdown-item fs-5" href="./tablero_de_control.html">Tablero de Control</a>
+                            </li>
                             <li><a class="dropdown-item fs-5" href="./entradas_salidas.html">Entrada y Salidas</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle fs-4" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle fs-4" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
                             Administración
                         </a>
                         <ul class="dropdown-menu custom-dropdown-menu">
@@ -88,7 +97,7 @@
             </form>
         </div>
     </nav>
-    
+
     <main class="bg-body-secondary">
         <div class="container text-center d-block justify-content-center text ">
             <h4>COLECTIVO</h4>
@@ -107,16 +116,21 @@
                         <label for="folioInput" class="form-label">Folio</label>
                         <input type="text" class="form-control input-trans-custom" id="folioInput" required>
                     </div>
+
                     <div class="col-6 text-center mt-4">
-                        <button class="btn btn-primary btn-lg fs-5 btn-crear me-4" type="button" onclick="iniciarLector()">Crear</button>
-                        <button class="btn btn-primary btn-lg fs-5 btn-cancel" type="button" onclick="detenerLector()">Cancelar</button>
+                        <button class="btn btn-primary btn-lg fs-5 btn-crear me-4" type="button">Crear</button>
+                        <button class="btn btn-primary btn-lg fs-5 btn-cancel" type="button">Cancelar</button>
                     </div>
                 </form>
             </div>
         </div>
     </section>
-    
-    
+
+    <!--<div id="resultado"></div>
+    <div id="camera"></div>-->
+
+    <div id="resultado"></div>
+    <div id="camera"></div>
 
     <footer>
         <div class="container">
