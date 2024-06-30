@@ -11,8 +11,9 @@ import lombok.*;
 public class ExistenciasDto {
 
     private Long id_existencias;
-    private Long existencia;
-    private Double importe;
+    private Long cantidad;
+    private Double total;
 
-    private Long tipoInsumo_id;
+    private Long salidas_id;
+    private Long entradas_id;
 }

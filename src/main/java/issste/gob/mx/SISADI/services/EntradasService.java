@@ -2,14 +2,12 @@ package issste.gob.mx.SISADI.services;
 
 import issste.gob.mx.SISADI.config.ApiResponse;
 import issste.gob.mx.SISADI.model.dao.EntradasRepository;
+import issste.gob.mx.SISADI.model.dao.InsumoRepository;
 import issste.gob.mx.SISADI.model.dao.OperacionRepository;
-import issste.gob.mx.SISADI.model.dao.ProveedorRepository;
-import issste.gob.mx.SISADI.model.dao.TipoInsumoRepository;
 import issste.gob.mx.SISADI.model.dto.EntradasDto;
 import issste.gob.mx.SISADI.model.entity.Entradas;
+import issste.gob.mx.SISADI.model.entity.Insumo;
 import issste.gob.mx.SISADI.model.entity.Operacion;
-import issste.gob.mx.SISADI.model.entity.Proveedor;
-import issste.gob.mx.SISADI.model.entity.TipoInsumo;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,14 +22,12 @@ import java.util.Optional;
 public class EntradasService {
     private final EntradasRepository repository;
     private final OperacionRepository operacionRepository;
-    private final TipoInsumoRepository tipoInsumoRepository;
-    private final ProveedorRepository proveedorRepository;
+    private final InsumoRepository insumoRepository;
 
-    public EntradasService(EntradasRepository repository, OperacionRepository operacionRepository, TipoInsumoRepository tipoInsumoRepository, ProveedorRepository proveedorRepository) {
+    public EntradasService(EntradasRepository repository, OperacionRepository operacionRepository, InsumoRepository insumoRepository) {
         this.repository = repository;
         this.operacionRepository = operacionRepository;
-        this.tipoInsumoRepository = tipoInsumoRepository;
-        this.proveedorRepository = proveedorRepository;
+        this.insumoRepository = insumoRepository;
     }
 
     @Transactional(readOnly = true)
@@ -51,15 +47,13 @@ public class EntradasService {
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<ApiResponse> register (EntradasDto entradasDto) {
         Operacion operacion = operacionRepository.findById(entradasDto.getOperacion_id()).orElseThrow(() -> new RuntimeException("OperacionNotFound"));
-        TipoInsumo tipoInsumo = tipoInsumoRepository.findById(entradasDto.getTipoInsumo_id()).orElseThrow(() -> new RuntimeException("TipoInsumoNotFound"));
-        Proveedor proveedor = proveedorRepository.findById(entradasDto.getProveedor_id()).orElseThrow(() -> new RuntimeException("ProveedorNotFound"));
+        Insumo insumo = insumoRepository.findById(entradasDto.getInsumos_id()).orElseThrow(() -> new RuntimeException("InsumoNotFound"));
 
         Entradas entradas = new Entradas();
-        entradas.setId_entradas(entradasDto.getId_entradas());
         entradas.setCantidad(entradasDto.getCantidad());
+        entradas.setTotal(entradasDto.getTotal());
         entradas.setOperacion(operacion);
-        entradas.setTipoInsumo(tipoInsumo);
-        entradas.setProveedor(proveedor);
+        entradas.setInsumo(insumo);
 
         repository.save(entradas);
 
@@ -70,14 +64,13 @@ public class EntradasService {
     public ResponseEntity<ApiResponse> update(EntradasDto entradasDto) {
         Entradas foundEntradas = repository.findById(entradasDto.getId_entradas()).orElseThrow(() -> new RuntimeException("EntradasNotFound"));
         Operacion foundOperacion = operacionRepository.findById(entradasDto.getOperacion_id()).orElseThrow(() -> new RuntimeException("OperacionNotFound"));
-        TipoInsumo foundTipoInsumo = tipoInsumoRepository.findById(entradasDto.getTipoInsumo_id()).orElseThrow(() -> new RuntimeException("TipoInsumoNotFound"));
-        Proveedor foundProveedor = proveedorRepository.findById(entradasDto.getProveedor_id()).orElseThrow(() -> new RuntimeException("ProveedorNotFound"));
+        Insumo foundInsumo = insumoRepository.findById(entradasDto.getInsumos_id()).orElseThrow(() -> new RuntimeException("InsumoNotFound"));
 
         foundEntradas.setId_entradas(entradasDto.getId_entradas());
         foundEntradas.setCantidad(entradasDto.getCantidad());
+        foundEntradas.setTotal(entradasDto.getTotal());
         foundEntradas.setOperacion(foundOperacion);
-        foundEntradas.setTipoInsumo(foundTipoInsumo);
-        foundEntradas.setProveedor(foundProveedor);
+        foundEntradas.setInsumo(foundInsumo);
 
         repository.saveAndFlush(foundEntradas);
 

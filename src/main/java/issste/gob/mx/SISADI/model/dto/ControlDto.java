@@ -17,7 +17,6 @@ public class ControlDto {
     private Double precio_final;
     private Double imp_inv_final;
 
-    private Long entradas_id;
-    private Long salidas_id;
+    private Long operacion_id;
 
 }

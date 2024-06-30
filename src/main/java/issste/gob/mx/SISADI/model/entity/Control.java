@@ -3,8 +3,6 @@ package issste.gob.mx.SISADI.model.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Set;
-
 @Entity
 @Getter
 @Setter
@@ -31,10 +29,7 @@ public class Control {
     private Double imp_inv_final;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "entrada_id")
-    private Entradas entradas;
+    @JoinColumn(name = "operacion_id")
+    private Operacion operacion;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "salida_id")
-    private Salidas salidas;
 }

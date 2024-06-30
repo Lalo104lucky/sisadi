@@ -39,10 +39,9 @@ public class InsumoController {
     @PutMapping("/")
     public ResponseEntity<ApiResponse> update (@RequestBody InsumoDto insumoDto) {
         try {
-            service.update(insumoDto);
-            return new ResponseEntity<>(new ApiResponse(insumoDto, HttpStatus.OK), HttpStatus.OK);
+            return service.update(insumoDto);
         } catch (RuntimeException runtimeException) {
-            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, runtimeException.getMessage()), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.NOT_FOUND, true, runtimeException.getMessage()), HttpStatus.NOT_FOUND);
         }
     }
 

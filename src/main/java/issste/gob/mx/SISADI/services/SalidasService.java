@@ -1,13 +1,13 @@
 package issste.gob.mx.SISADI.services;
 
 import issste.gob.mx.SISADI.config.ApiResponse;
+import issste.gob.mx.SISADI.model.dao.InsumoRepository;
 import issste.gob.mx.SISADI.model.dao.OperacionRepository;
 import issste.gob.mx.SISADI.model.dao.SalidasRepository;
-import issste.gob.mx.SISADI.model.dao.TipoInsumoRepository;
 import issste.gob.mx.SISADI.model.dto.SalidasDto;
+import issste.gob.mx.SISADI.model.entity.Insumo;
 import issste.gob.mx.SISADI.model.entity.Operacion;
 import issste.gob.mx.SISADI.model.entity.Salidas;
-import issste.gob.mx.SISADI.model.entity.TipoInsumo;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,14 +21,13 @@ import java.util.Optional;
 @Transactional
 public class SalidasService {
     private final SalidasRepository repository;
-    private final TipoInsumoRepository tipoInsumoRepository;
     private final OperacionRepository operacionRepository;
+    private final InsumoRepository insumoRepository;
 
-
-    public SalidasService(SalidasRepository repository, TipoInsumoRepository tipoInsumoRepository, OperacionRepository operacionRepository) {
+    public SalidasService(SalidasRepository repository, OperacionRepository operacionRepository, InsumoRepository insumoRepository) {
         this.repository = repository;
-        this.tipoInsumoRepository = tipoInsumoRepository;
         this.operacionRepository = operacionRepository;
+        this.insumoRepository = insumoRepository;
     }
 
     @Transactional(readOnly = true)
@@ -47,14 +46,14 @@ public class SalidasService {
 
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<ApiResponse> register(SalidasDto salidasDto){
-        TipoInsumo tipoInsumo = tipoInsumoRepository.findById(salidasDto.getTipoInsumo_id()).orElseThrow(() -> new RuntimeException("TipoInsumoNotFound"));
         Operacion operacion = operacionRepository.findById(salidasDto.getOperacion_id()).orElseThrow(() -> new RuntimeException("OperacionNotFound"));
+        Insumo insumo = insumoRepository.findById(salidasDto.getInsumos_id()).orElseThrow(() -> new RuntimeException("InsumoNotFound"));
 
         Salidas salidas = new Salidas();
-        salidas.setId_salidas(salidasDto.getId_salidas());
-        salidas.setCantidad(salidas.getCantidad());
-        salidas.setTipoInsumo(tipoInsumo);
+        salidas.setCantidad(salidasDto.getCantidad());
+        salidas.setTotal(salidasDto.getTotal());
         salidas.setOperacion(operacion);
+        salidas.setInsumo(insumo);
 
         repository.save(salidas);
 
@@ -64,13 +63,14 @@ public class SalidasService {
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<ApiResponse> update(SalidasDto salidasDto){
         Salidas foundSalidas = repository.findById(salidasDto.getId_salidas()).orElseThrow(() -> new RuntimeException("SalidasNotFound"));
-        TipoInsumo foundtipoInsumo = tipoInsumoRepository.findById(salidasDto.getTipoInsumo_id()).orElseThrow(() -> new RuntimeException("TipoInsumoNotFound"));
-        Operacion foundoperacion = operacionRepository.findById(salidasDto.getOperacion_id()).orElseThrow(() -> new RuntimeException("OperacionNotFound"));
+        Operacion foundOperacion = operacionRepository.findById(salidasDto.getOperacion_id()).orElseThrow(() -> new RuntimeException("OperacionNotFound"));
+        Insumo foundInsumo = insumoRepository.findById(salidasDto.getInsumos_id()).orElseThrow(() -> new RuntimeException("InsumoNotFound"));
 
         foundSalidas.setId_salidas(salidasDto.getId_salidas());
         foundSalidas.setCantidad(salidasDto.getCantidad());
-        foundSalidas.setTipoInsumo(foundtipoInsumo);
-        foundSalidas.setOperacion(foundoperacion);
+        foundSalidas.setTotal(salidasDto.getTotal());
+        foundSalidas.setOperacion(foundOperacion);
+        foundSalidas.setInsumo(foundInsumo);
 
         repository.saveAndFlush(foundSalidas);
 

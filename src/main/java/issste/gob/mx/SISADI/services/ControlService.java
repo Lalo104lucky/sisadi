@@ -2,12 +2,10 @@ package issste.gob.mx.SISADI.services;
 
 import issste.gob.mx.SISADI.config.ApiResponse;
 import issste.gob.mx.SISADI.model.dao.ControlRepository;
-import issste.gob.mx.SISADI.model.dao.EntradasRepository;
-import issste.gob.mx.SISADI.model.dao.SalidasRepository;
+import issste.gob.mx.SISADI.model.dao.OperacionRepository;
 import issste.gob.mx.SISADI.model.dto.ControlDto;
 import issste.gob.mx.SISADI.model.entity.Control;
-import issste.gob.mx.SISADI.model.entity.Entradas;
-import issste.gob.mx.SISADI.model.entity.Salidas;
+import issste.gob.mx.SISADI.model.entity.Operacion;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,13 +19,11 @@ import java.util.Optional;
 @Transactional
 public class ControlService {
     private final ControlRepository repository;
-    private final EntradasRepository entradasRepository;
-    private final SalidasRepository salidasRepository;
+    private final OperacionRepository operacionRepository;
 
-    public ControlService(ControlRepository repository, EntradasRepository entradasRepository, SalidasRepository salidasRepository) {
+    public ControlService(ControlRepository repository, OperacionRepository operacionRepository) {
         this.repository = repository;
-        this.entradasRepository = entradasRepository;
-        this.salidasRepository = salidasRepository;
+        this.operacionRepository = operacionRepository;
     }
 
     @Transactional(readOnly = true)
@@ -46,18 +42,15 @@ public class ControlService {
 
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<ApiResponse> register (ControlDto controlDto) {
-        Entradas entradas = entradasRepository.findById(controlDto.getEntradas_id()).orElseThrow(() -> new RuntimeException("EntradasNotFound"));
-        Salidas salidas = salidasRepository.findById(controlDto.getSalidas_id()).orElseThrow(() -> new RuntimeException("SalidasNotFound"));
+        Operacion operacion = operacionRepository.findById(controlDto.getOperacion_id()).orElseThrow(() -> new RuntimeException("OperacionNotFound"));
 
         Control control = new Control();
-        control.setId_control(controlDto.getId_control());
         control.setImp_entradas(controlDto.getImp_entradas());
         control.setImp_inv_inicial(controlDto.getImp_inv_inicial());
         control.setImp_inv_final(controlDto.getImp_inv_final());
         control.setImp_salidas(controlDto.getImp_salidas());
         control.setPrecio_final(controlDto.getPrecio_final());
-        control.setEntradas(entradas);
-        control.setSalidas(salidas);
+        control.setOperacion(operacion);
 
         repository.save(control);
 
@@ -67,8 +60,7 @@ public class ControlService {
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<ApiResponse> update (ControlDto controlDto) {
         Control foundControl = repository.findById(controlDto.getId_control()).orElseThrow(() -> new RuntimeException("ControlNotFound"));
-        Entradas foundEntradas = entradasRepository.findById(controlDto.getEntradas_id()).orElseThrow(() -> new RuntimeException("EntradasNotFound"));
-        Salidas foundSalidas = salidasRepository.findById(controlDto.getSalidas_id()).orElseThrow(() -> new RuntimeException("SalidasNotFound"));
+        Operacion foundOperacion = operacionRepository.findById(controlDto.getOperacion_id()).orElseThrow(() -> new RuntimeException("OperacionNotFound"));
 
         foundControl.setId_control(controlDto.getId_control());
         foundControl.setImp_entradas(controlDto.getImp_entradas());
@@ -76,8 +68,7 @@ public class ControlService {
         foundControl.setImp_inv_final(controlDto.getImp_inv_final());
         foundControl.setImp_salidas(controlDto.getImp_salidas());
         foundControl.setPrecio_final(controlDto.getPrecio_final());
-        foundControl.setEntradas(foundEntradas);
-        foundControl.setSalidas(foundSalidas);
+        foundControl.setOperacion(foundOperacion);
 
         repository.saveAndFlush(foundControl);
 

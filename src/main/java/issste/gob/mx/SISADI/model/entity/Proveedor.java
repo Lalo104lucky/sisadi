@@ -29,7 +29,7 @@ public class Proveedor {
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
-    @OneToMany(mappedBy = "proveedor", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "proveedor")
     @JsonIgnore
-    private Set<Entradas> entradas;
+    private Set<Operacion> operacion;
 }

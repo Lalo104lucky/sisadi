@@ -12,8 +12,8 @@ public class EntradasDto {
 
     private Long id_entradas;
     private Long cantidad;
+    private Double total;
 
-    private Long tipoInsumo_id;
     private Long operacion_id;
-    private Long proveedor_id;
+    private Long insumos_id;
 }

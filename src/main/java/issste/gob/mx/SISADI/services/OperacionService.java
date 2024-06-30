@@ -3,9 +3,7 @@ package issste.gob.mx.SISADI.services;
 import issste.gob.mx.SISADI.config.ApiResponse;
 import issste.gob.mx.SISADI.model.dao.*;
 import issste.gob.mx.SISADI.model.dto.OperacionDto;
-import issste.gob.mx.SISADI.model.entity.Existencias;
-import issste.gob.mx.SISADI.model.entity.Operacion;
-import issste.gob.mx.SISADI.model.entity.Usuario;
+import issste.gob.mx.SISADI.model.entity.*;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,13 +17,11 @@ import java.util.Optional;
 @Transactional
 public class OperacionService {
     private final OperacionRepository repository;
-    private final UsuarioRepository usuarioRepository;
-    private final ExistenciasRepository existenciasRepository;
+    private final ProveedorRepository proveedorRepository;
 
-    public OperacionService(OperacionRepository repository, UsuarioRepository usuarioRepository, ExistenciasRepository existenciasRepository) {
+    public OperacionService(OperacionRepository repository, ProveedorRepository proveedorRepository) {
         this.repository = repository;
-        this.usuarioRepository = usuarioRepository;
-        this.existenciasRepository = existenciasRepository;
+        this.proveedorRepository = proveedorRepository;
     }
 
     @Transactional(readOnly = true)
@@ -44,18 +40,20 @@ public class OperacionService {
 
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<ApiResponse> register (OperacionDto operacionDto) {
-        Existencias foundExistencia = existenciasRepository.findById(operacionDto.getExistencias_id()).orElseThrow(() -> new RuntimeException("ExistenciasNotFound"));
-        Usuario foundUsuario = usuarioRepository.findById(operacionDto.getUsuario_id()).orElseThrow(() -> new RuntimeException("UsuarioNotFound"));
 
         Operacion operacion = new Operacion();
-        operacion.setId_operacion(operacionDto.getId_operacion());
-        operacion.setNom_operacion(operacionDto.getNom_operacion());
+        operacion.setNombre(operacionDto.getNombre());
         operacion.setFolio(operacionDto.getFolio());
-        operacion.setFecha_inicial(operacionDto.getFecha_inicial());
-        operacion.setFecha_final(operacionDto.getFecha_final());
+        operacion.setTipo_movimiento(operacionDto.getTipo_movimiento());
+        operacion.setFecha(operacionDto.getFecha());
         operacion.setUnidad(operacionDto.getUnidad());
-        operacion.setUsuario(foundUsuario);
-        operacion.setExistencias(foundExistencia);
+        if (operacionDto.getProveedor_id() != null) {
+            Proveedor proveedor = proveedorRepository.findById(operacionDto.getProveedor_id())
+                    .orElseThrow(() -> new RuntimeException("ProveedorNotFound"));
+            operacion.setProveedor(proveedor);
+        } else {
+            operacion.setProveedor(null);
+        }
 
         repository.save(operacion);
 
@@ -65,17 +63,18 @@ public class OperacionService {
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<ApiResponse> update (OperacionDto operacionDto) {
         Operacion foundOperacion = repository.findById(operacionDto.getId_operacion()).orElseThrow(() -> new RuntimeException("OperacionNotFound"));
-        Existencias foundExistencia = existenciasRepository.findById(operacionDto.getExistencias_id()).orElseThrow(() -> new RuntimeException("ExistenciasNotFound"));
-        Usuario foundUsuario = usuarioRepository.findById(operacionDto.getUsuario_id()).orElseThrow(() -> new RuntimeException("UsuarioNotFound"));
 
-        foundOperacion.setId_operacion(operacionDto.getId_operacion());
-        foundOperacion.setNom_operacion(operacionDto.getNom_operacion());
         foundOperacion.setFolio(operacionDto.getFolio());
-        foundOperacion.setFecha_inicial(operacionDto.getFecha_inicial());
-        foundOperacion.setFecha_final(operacionDto.getFecha_final());
+        foundOperacion.setTipo_movimiento(operacionDto.getTipo_movimiento());
+        foundOperacion.setFecha(operacionDto.getFecha());
         foundOperacion.setUnidad(operacionDto.getUnidad());
-        foundOperacion.setUsuario(foundUsuario);
-        foundOperacion.setExistencias(foundExistencia);
+        if (operacionDto.getProveedor_id() != null) {
+            Proveedor foundProveedor = proveedorRepository.findById(operacionDto.getProveedor_id())
+                    .orElseThrow(() -> new RuntimeException("ProveedorNotFound"));
+            foundOperacion.setProveedor(foundProveedor);
+        } else {
+            foundOperacion.setProveedor(null);
+        }
 
         repository.saveAndFlush(foundOperacion);
 

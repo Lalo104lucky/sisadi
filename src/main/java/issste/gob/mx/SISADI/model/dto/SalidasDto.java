@@ -2,7 +2,6 @@ package issste.gob.mx.SISADI.model.dto;
 
 import lombok.*;
 
-import java.util.Set;
 
 @Getter
 @Setter
@@ -14,7 +13,8 @@ public class SalidasDto {
 
     private Long id_salidas;
     private Long cantidad;
+    private Double total;
 
-    private Long tipoInsumo_id;
     private Long operacion_id;
+    private Long insumos_id;
 }

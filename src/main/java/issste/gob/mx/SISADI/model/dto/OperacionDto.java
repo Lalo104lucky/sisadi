@@ -13,12 +13,11 @@ import java.sql.Timestamp;
 public class OperacionDto {
 
     private Long id_operacion;
+    private String nombre;
     private String folio;
-    private String nom_operacion;
-    private Timestamp fecha_inicial;
-    private Timestamp fecha_final;
+    private String tipo_movimiento;
+    private Timestamp fecha;
     private String unidad;
 
-    private Long usuario_id;
-    private Long existencias_id;
+    private Long proveedor_id;
 }

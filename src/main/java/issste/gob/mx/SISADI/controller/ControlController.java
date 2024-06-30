@@ -29,14 +29,17 @@ public class ControlController {
 
     @PostMapping("/")
     public ResponseEntity<ApiResponse> save (@RequestBody ControlDto controlDto){
-        return service.register(controlDto);
+        try {
+            return service.register(controlDto);
+        } catch (RuntimeException runtimeException) {
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.NOT_FOUND, true, runtimeException.getMessage()), HttpStatus.NOT_FOUND);
+        }
     }
 
     @PutMapping("/")
     public ResponseEntity<ApiResponse> update (@RequestBody ControlDto controlDto) {
         try {
-            service.update(controlDto);
-            return new ResponseEntity<>(new ApiResponse(controlDto, HttpStatus.OK), HttpStatus.OK);
+            return service.update(controlDto);
         } catch (RuntimeException runtimeException) {
             return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, runtimeException.getMessage()), HttpStatus.BAD_REQUEST);
         }

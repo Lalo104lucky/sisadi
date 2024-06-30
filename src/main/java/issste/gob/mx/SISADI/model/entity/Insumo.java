@@ -36,4 +36,12 @@ public class Insumo {
             inverseJoinColumns = @JoinColumn(name = "tipoinsumos_id"))
     @JsonIgnore
     private Set<TipoInsumo> tipoInsumos;
+
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "insumo")
+    @JsonIgnore
+    private Entradas entradas;
+
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "insumo")
+    @JsonIgnore
+    private Salidas salidas;
 }

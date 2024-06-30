@@ -29,7 +29,11 @@ public class SalidasController {
 
     @PostMapping("/")
     public ResponseEntity<ApiResponse> save (@RequestBody SalidasDto salidasDto) {
-        return service.register(salidasDto);
+        try {
+            return service.register(salidasDto);
+        } catch (RuntimeException runtimeException){
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.NOT_FOUND, true, runtimeException.getMessage()), HttpStatus.NOT_FOUND);
+        }
     }
 
     @PutMapping("/")

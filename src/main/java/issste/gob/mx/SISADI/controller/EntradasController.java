@@ -5,7 +5,6 @@ import issste.gob.mx.SISADI.model.dto.EntradasDto;
 import issste.gob.mx.SISADI.services.EntradasService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.connector.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,14 +29,17 @@ public class EntradasController {
 
     @PostMapping("/")
     public ResponseEntity<ApiResponse> save (@RequestBody EntradasDto entradasDto){
-        return service.register(entradasDto);
+        try {
+            return service.register(entradasDto);
+        } catch (RuntimeException runtimeException) {
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.NOT_FOUND, true, runtimeException.getMessage()), HttpStatus.NOT_FOUND);
+        }
     }
 
     @PutMapping("/")
     public ResponseEntity<ApiResponse> update (@RequestBody EntradasDto entradasDto){
         try {
-            service.update(entradasDto);
-            return new ResponseEntity<>(new ApiResponse(entradasDto, HttpStatus.OK), HttpStatus.OK);
+            return service.update(entradasDto);
         } catch (RuntimeException runtimeException) {
             return new ResponseEntity<>(new ApiResponse(HttpStatus.NOT_FOUND, true, runtimeException.getMessage()), HttpStatus.NOT_FOUND);
         }

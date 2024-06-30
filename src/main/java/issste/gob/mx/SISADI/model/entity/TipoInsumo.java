@@ -1,6 +1,5 @@
 package issste.gob.mx.SISADI.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -27,16 +26,5 @@ public class TipoInsumo {
 
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "tipoInsumos")
     private Set<Insumo> insumos;
-
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "tipoInsumo", orphanRemoval = true)
-    @JsonIgnore
-    private Set<Existencias> existencias;
-
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "tipoInsumo", orphanRemoval = true)
-    @JsonIgnore
-    private Set<Entradas> entradas;
-
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "tipoInsumo", orphanRemoval = true)
-    @JsonIgnore
-    private Set<Salidas> salidas;
+    
 }

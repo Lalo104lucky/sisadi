@@ -36,7 +36,4 @@ public class Usuario {
     @JsonIgnore
     private Set<Insumo> insumos;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "usuario")
-    @JsonIgnore
-    private Set<Operacion> operacions;
 }

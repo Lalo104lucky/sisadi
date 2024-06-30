@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Set;
 
 @Entity
 @Getter
@@ -22,21 +21,18 @@ public class Entradas {
     private Long id_entradas;
     @Column(name = "cantidad", nullable = false)
     private Long cantidad;
+    @Column(name = "total", nullable = false)
+    private Double total;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "tipoInsumo_id")
-    private TipoInsumo tipoInsumo;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "entradas")
+    @JsonIgnore
+    private Existencias existencias;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "operacion_id")
     private Operacion operacion;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "entradas", orphanRemoval = true)
-    @JsonIgnore
-    private Set<Control> controls;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "proveedor_id")
-    private Proveedor proveedor;
-
+    @OneToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "insumos_id")
+    private Insumo insumo;
 }

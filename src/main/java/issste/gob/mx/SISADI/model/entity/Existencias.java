@@ -1,11 +1,7 @@
 package issste.gob.mx.SISADI.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.util.Set;
-
 
 @Entity
 @Getter
@@ -21,16 +17,17 @@ public class Existencias {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_existencias")
     private Long id_existencias;
-    @Column(name = "existencia", nullable = false)
-    private Long existencia;
-    @Column(name = "importe", nullable = false)
-    private Double importe;
+    @Column(name = "cantidad", nullable = false)
+    private Long cantidad;
+    @Column(name = "total", nullable = false)
+    private Double total;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = true)
-    @JoinColumn(name = "tipoinsumo_id")
-    private TipoInsumo tipoInsumo;
+    @OneToOne(cascade = CascadeType.ALL, optional = true, orphanRemoval = true)
+    @JoinColumn(name = "salidas_id")
+    private Salidas salidas;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "existencias", orphanRemoval = true)
-    @JsonIgnore
-    private Set<Operacion> operacions;
+    @OneToOne(cascade = CascadeType.ALL, optional = true, orphanRemoval = true)
+    @JoinColumn(name = "entradas_id")
+    private Entradas entradas;
+
 }
