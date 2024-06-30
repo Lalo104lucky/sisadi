@@ -24,7 +24,6 @@ async function obtenerDatosUsuario(id_usuario) {
     }
 }
 
-// Aún le falta a este 
 async function obtenerTransEntrada() {
     try {
         const authToken = localStorage.getItem('authToken');
@@ -82,7 +81,6 @@ function mostrarNombrePersona(nombre) {
 document.addEventListener('DOMContentLoaded', () => {
     obtenerTransEntrada();
 
-    
     // Enfocar automáticamente en el campo de entrada cuando la página se carga
     const folioInput = document.getElementById('folioInput');
     if (folioInput) {
@@ -108,15 +106,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 localStorage.setItem('folio', folio);
                 localStorage.setItem('unidad', 'HAE 139 "CENTENARIO DE LA REVOLUCIÓN MEXICANA"');
                 localStorage.setItem('tipoMovimiento', 'TRANSFERENCIA DE ENTRADA');
+                localStorage.setItem('nombre', "ENTRADA");
+                localStorage.setItem('proveedor_id', null);
                 localStorage.setItem('fecha', new Date().toLocaleDateString('es-MX', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }));
-                window.location.href = 'entradas_transferencia.html';
             } else {
                 alert('Folio no puede estar vacío');
             }
         }
     }
 
-    // Agregar event listeners a los botones
     const btnCrear = document.querySelector('.btn-crear');
     const btnCancel = document.querySelector('.btn-cancel');
 
@@ -126,4 +124,47 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         console.error('No se encontraron los botones para agregar los event listeners');
     }
+
+    document.getElementById('crearButton').addEventListener('click', async function() {
+        if (folioInput) {
+            const folio = folioInput.value;
+            if (folio) {
+                const operacionData = {
+                    fecha: new Date().toISOString(),
+                    folio: folio,
+                    nombre: "ENTRADA",
+                    tipo_movimiento: "TRANSFERENCIA DE ENTRADA",
+                    unidad: "HAE 139",
+                    proveedor_id: null
+                };
+    
+                try {
+                    const response = await fetch('http://localhost:8081/sisadi/operacion/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+                        },
+                        body: JSON.stringify(operacionData)
+                    });
+    
+                    if (!response.ok) {
+                        throw new Error('Error al crear la operación');
+                    }
+    
+                    const responseData = await response.json();
+                    console.log('Operación creada con éxito:', responseData);
+    
+                    const operacionId = responseData.data.id_operacion;
+                    localStorage.setItem('operacionId', operacionId);
+    
+                    window.location.href = 'entradas_transferencia.html';
+                } catch (error) {
+                    console.error('Hubo un problema con la solicitud:', error);
+                }
+            } else {
+                alert('Folio no puede estar vacío');
+            }
+        }
+    });    
 });

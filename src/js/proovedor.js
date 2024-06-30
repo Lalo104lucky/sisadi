@@ -255,8 +255,8 @@ function llenarTabla(proveedor) {
     proveedor.forEach(proveedor => {
         const tr = document.createElement('tr');
         tr.innerHTML = `
-            <td>${proveedor.rfc}</td>
             <td>${proveedor.nombre}</td>
+            <td>${proveedor.rfc}</td>
             <td>
                 <button class="btn btn-warning btn-sm me-3" onclick="editarProveedor(${proveedor.id_proveedor})"><i class="bi bi-pencil"></i> Editar</button>
                 <button class="btn btn-danger btn-sm" onclick="eliminarProveedor(${proveedor.id_proveedor})"><i class="bi bi-trash"></i> Eliminar</button>

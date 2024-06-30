@@ -340,3 +340,21 @@ footer::after {
 .select2-container {
     width: 100% !important;
 }
+
+.btn-cerrar {
+    background-color: #818181; 
+    color: #ffffff; 
+    border: none; 
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+
+.btn-cerrar:hover,
+.btn-cerrar:focus,
+.btn-cerrar:active {
+    background-color: #5e5e5e !important;
+}
+
+.btn-cerrar:focus {
+    box-shadow: 0 0 0 0.2rem rgba(87, 87, 87, 0.5);
+}

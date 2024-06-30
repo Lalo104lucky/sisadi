@@ -134,7 +134,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     const insumos = await obtenerInsumos();
     llenarDescripciones(insumos);
 
-    // Event listener para buscar insumo
+    const operacionId = localStorage.getItem('operacionId');
+    console.log('ID de la operación:', operacionId);
+
     document.getElementById('agregarInsumo').addEventListener('click', async () => {
         const clave = document.getElementById('folioInput').value;
         const descripcion = document.getElementById('unitSelect').value;
@@ -150,11 +152,45 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (insumoFiltrado && insumoFiltrado.length > 0) {
             const insumoData = insumoFiltrado[0]; // Considerar el primer insumo de la respuesta
             agregarInsumoATabla(insumoData);
+
+            const cantidad = parseFloat(document.getElementById('cantidadInput').value);
+            const total = cantidad * insumoData.precio;
+
+            const entradaData = {
+                cantidad: cantidad.toString(),
+                total: total.toFixed(2),
+                operacion_id: operacionId,
+                insumos_id: insumoData.id_insumo
+            };
+
+
+            try {
+                const authToken = localStorage.getItem('authToken');
+                const response = await fetch('http://localhost:8081/sisadi/entradas/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify(entradaData)
+                });
+
+                if (!response.ok) {
+                    throw new Error('Error al crear la entrada');
+                }
+
+                const responseData = await response.json();
+                console.log('Respuesta del servidor:', responseData);
+            } catch (error) {
+                console.error('Hubo un problema al crear la entrada:', error);
+            }
+
         } else {
             console.error('No se encontró el insumo');
         }
     });
 });
+
 
 function llenarDescripciones(insumos) {
     const unitSelect = document.getElementById('unitSelect');
@@ -166,12 +202,10 @@ function llenarDescripciones(insumos) {
     });
 }
 
-// Variables globales para los totales
 let totalClaves = 0;
 let totalInsumos = 0;
 let totalGeneral = 0;
 
-// Función para agregar insumo a la tabla
 function agregarInsumoATabla(insumo) {
     const { clave, descripcion, precio, existencia } = insumo;
     const cantidad = parseFloat(document.getElementById('cantidadInput').value);
@@ -191,22 +225,17 @@ function agregarInsumoATabla(insumo) {
 
     tableBody.appendChild(row);
 
-    // Actualizar totales globales
     totalClaves++;
     totalInsumos += cantidad;
     totalGeneral += total;
 
-    // Actualizar totales mostrados en la tabla
     actualizarTotales();
 
-    // Mostrar detalles del insumo seleccionado
     mostrarDetallesInsumo(insumo);
 }
 
 function mostrarDetallesInsumo(insumo) {
     document.getElementById('precioInsumo').textContent = insumo.precio.toFixed(2);
-    // Asumiendo que `existencia` es un campo del insumo, actualizar su valor
-    //document.getElementById('existenciaInsumo').textContent = insumo.existencia || 'N/A';
 }
 
 
