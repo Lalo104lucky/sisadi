@@ -37,11 +37,15 @@ public class Insumo {
     @JsonIgnore
     private Set<TipoInsumo> tipoInsumos;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "insumo")
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @JoinTable(name = "insumo_has_entradas", joinColumns = @JoinColumn(name = "insumos_id"),
+            inverseJoinColumns = @JoinColumn(name = "entradas_id"))
     @JsonIgnore
-    private Entradas entradas;
+    private Set<Entradas> entradas;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "insumo")
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @JoinTable(name = "insumo_has_salidas", joinColumns = @JoinColumn(name = "insumos_id"),
+            inverseJoinColumns = @JoinColumn(name = "salidas_id"))
     @JsonIgnore
-    private Salidas salidas;
+    private Set<Salidas> salidas;
 }

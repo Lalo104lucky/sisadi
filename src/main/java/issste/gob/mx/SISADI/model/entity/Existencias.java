@@ -22,11 +22,12 @@ public class Existencias {
     @Column(name = "total", nullable = false)
     private Double total;
 
-    @OneToOne(cascade = CascadeType.ALL, optional = true, orphanRemoval = true)
+    //tienen que ir al revez, es OneToMany, para que así de varias salidas, ente sola una existencia
+    @ManyToOne(fetch = FetchType.EAGER, optional = true)
     @JoinColumn(name = "salidas_id")
     private Salidas salidas;
 
-    @OneToOne(cascade = CascadeType.ALL, optional = true, orphanRemoval = true)
+    @ManyToOne(fetch = FetchType.EAGER, optional = true)
     @JoinColumn(name = "entradas_id")
     private Entradas entradas;
 

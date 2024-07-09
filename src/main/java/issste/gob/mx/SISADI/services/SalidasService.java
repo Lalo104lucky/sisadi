@@ -15,7 +15,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -47,13 +50,28 @@ public class SalidasService {
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<ApiResponse> register(SalidasDto salidasDto){
         Operacion operacion = operacionRepository.findById(salidasDto.getOperacion_id()).orElseThrow(() -> new RuntimeException("OperacionNotFound"));
-        Insumo insumo = insumoRepository.findById(salidasDto.getInsumos_id()).orElseThrow(() -> new RuntimeException("InsumoNotFound"));
 
         Salidas salidas = new Salidas();
         salidas.setCantidad(salidasDto.getCantidad());
         salidas.setTotal(salidasDto.getTotal());
         salidas.setOperacion(operacion);
-        salidas.setInsumo(insumo);
+        Set<Insumo> insumos = new HashSet<>();
+        Set<Salidas> salidas1 = new HashSet<>();
+        salidas1.add(salidas);
+
+        List<Insumo> insumoList = insumoRepository.findAllById(salidasDto.getInsumos_id());
+        for (Insumo insumo : insumoList) {
+            Set<Salidas> salidasActuales = insumo.getSalidas();
+            if (salidasActuales != null) {
+                salidasActuales = new HashSet<>(salidasActuales);
+            } else {
+                salidasActuales = new HashSet<>();
+            }
+            salidasActuales.add(salidas);
+            insumo.setSalidas(salidasActuales);
+            insumos.add(insumo);
+        }
+        salidas.setInsumos(insumos);
 
         repository.save(salidas);
 
@@ -64,13 +82,19 @@ public class SalidasService {
     public ResponseEntity<ApiResponse> update(SalidasDto salidasDto){
         Salidas foundSalidas = repository.findById(salidasDto.getId_salidas()).orElseThrow(() -> new RuntimeException("SalidasNotFound"));
         Operacion foundOperacion = operacionRepository.findById(salidasDto.getOperacion_id()).orElseThrow(() -> new RuntimeException("OperacionNotFound"));
-        Insumo foundInsumo = insumoRepository.findById(salidasDto.getInsumos_id()).orElseThrow(() -> new RuntimeException("InsumoNotFound"));
 
         foundSalidas.setId_salidas(salidasDto.getId_salidas());
         foundSalidas.setCantidad(salidasDto.getCantidad());
         foundSalidas.setTotal(salidasDto.getTotal());
         foundSalidas.setOperacion(foundOperacion);
-        foundSalidas.setInsumo(foundInsumo);
+        Set<Insumo> insumos = new HashSet<>();
+        Set<Salidas> salidas1 = new HashSet<>();
+        salidas1.add(foundSalidas);
+        insumoRepository.findAllById(salidasDto.getInsumos_id()).forEach(insumo -> {
+            insumo.setSalidas(salidas1);
+            insumos.add(insumo);
+        });
+        foundSalidas.setInsumos(insumos);
 
         repository.saveAndFlush(foundSalidas);
 
@@ -81,6 +105,20 @@ public class SalidasService {
     public void delete(Long id) {
         Optional<Salidas> foundSalidas = repository.findById(id);
         if(foundSalidas.isPresent()){
+            Salidas salidas = foundSalidas.get();
+
+            if (salidas.getInsumos() != null) {
+                for (Insumo insumo : salidas.getInsumos()) {
+                    if (insumo != null){
+                        insumo.getSalidas().remove(salidas);
+                    }
+                }
+            }
+
+            if (salidas.getInsumos() != null){
+                insumoRepository.saveAll(salidas.getInsumos());
+            }
+
             repository.deleteById(id);
         } else {
             throw new EntityNotFoundException("SalidasNotFound");

@@ -33,7 +33,7 @@ public class Operacion {
     @Column(name = "unidad", nullable = false)
     private String unidad;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "operacion", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "operacion")
     @JsonIgnore
     private Set<Control> controls;
 

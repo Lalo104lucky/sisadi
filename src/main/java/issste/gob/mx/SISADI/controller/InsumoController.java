@@ -2,6 +2,7 @@ package issste.gob.mx.SISADI.controller;
 
 import issste.gob.mx.SISADI.config.ApiResponse;
 import issste.gob.mx.SISADI.model.dto.InsumoDto;
+import issste.gob.mx.SISADI.model.entity.Insumo;
 import issste.gob.mx.SISADI.services.InsumoService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -53,5 +54,10 @@ public class InsumoController {
         } catch (EntityNotFoundException exception) {
             return new ResponseEntity<>(new ApiResponse(HttpStatus.NOT_FOUND, true, exception.getMessage()), HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping("/existencia/{idInsumo}")
+    public ResponseEntity<ApiResponse> getInsumoWithExistencia (@PathVariable Long idInsumo) {
+        return service.findInsumoWithExistencia(idInsumo);
     }
 }

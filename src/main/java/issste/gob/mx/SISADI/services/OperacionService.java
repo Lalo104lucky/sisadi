@@ -12,16 +12,23 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @Transactional
 public class OperacionService {
     private final OperacionRepository repository;
     private final ProveedorRepository proveedorRepository;
+    private final EntradasRepository entradasRepository;
+    private final SalidasRepository salidasRepository;
+    private final InsumoRepository insumoRepository;
 
-    public OperacionService(OperacionRepository repository, ProveedorRepository proveedorRepository) {
+    public OperacionService(OperacionRepository repository, ProveedorRepository proveedorRepository, EntradasRepository entradasRepository, SalidasRepository salidasRepository, InsumoRepository insumoRepository) {
         this.repository = repository;
         this.proveedorRepository = proveedorRepository;
+        this.entradasRepository = entradasRepository;
+        this.salidasRepository = salidasRepository;
+        this.insumoRepository = insumoRepository;
     }
 
     @Transactional(readOnly = true)
@@ -83,11 +90,30 @@ public class OperacionService {
 
     @Transactional(rollbackFor = {SQLException.class})
     public void delete(Long id) {
-        Optional<Operacion> foundOperacion = repository.findById(id);
-        if (foundOperacion.isPresent()) {
+        Optional<Operacion> optionalOperacion = repository.findById(id);
+        if (optionalOperacion.isPresent()) {
+            Operacion operacion = optionalOperacion.get();
+
+            Set<Entradas> entradasSet = operacion.getEntradas();
+            if (entradasSet != null) {
+                for (Entradas entrada : entradasSet) {
+                    if (entrada.getInsumos() != null) {
+                        for (Insumo insumo : entrada.getInsumos()) {
+                            if (insumo != null) {
+                                insumo.getEntradas().remove(entrada);
+                            }
+                        }
+                        insumoRepository.saveAll(entrada.getInsumos());
+                    }
+                    entradasRepository.deleteById(entrada.getId_entradas());
+                }
+            }
+
             repository.deleteById(id);
         } else {
             throw new EntityNotFoundException("OperacionNotFound");
         }
     }
+
+
 }

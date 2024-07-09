@@ -41,26 +41,31 @@ public class ExistenciasService {
     }
 
     @Transactional(rollbackFor = {SQLException.class})
-    public ResponseEntity<ApiResponse> register (ExistenciasDto existenciasDto) {
-
+    public ResponseEntity<ApiResponse> register(ExistenciasDto existenciasDto) {
         Existencias existencias = new Existencias();
-        existencias.setCantidad(existenciasDto.getCantidad());
-        existencias.setTotal(existenciasDto.getTotal());
+        existencias.setCantidad(0L);
+        existencias.setTotal(0.0);
 
         if (existenciasDto.getEntradas_id() != null) {
-            Entradas entradas = entradasRepository.findById(existenciasDto.getEntradas_id()).orElseThrow(() -> new RuntimeException("EntradasNotFound"));
+            Entradas entradas = entradasRepository.findById(existenciasDto.getEntradas_id())
+                    .orElseThrow(() -> new RuntimeException("EntradasNotFound"));
             existencias.setCantidad(existencias.getCantidad() + entradas.getCantidad());
             existencias.setTotal(existencias.getTotal() + entradas.getTotal());
-        } else if (existenciasDto.getSalidas_id() != null) {
-            Salidas salidas = salidasRepository.findById(existenciasDto.getSalidas_id()).orElseThrow(() -> new RuntimeException("salidasNotFound"));
+            existencias.setEntradas(entradas);
+        }
+
+        if (existenciasDto.getSalidas_id() != null) {
+            Salidas salidas = salidasRepository.findById(existenciasDto.getSalidas_id())
+                    .orElseThrow(() -> new RuntimeException("SalidasNotFound"));
             existencias.setCantidad(existencias.getCantidad() - salidas.getCantidad());
             existencias.setTotal(existencias.getTotal() - salidas.getTotal());
+            existencias.setSalidas(salidas);
         }
 
         repository.save(existencias);
-
         return new ResponseEntity<>(new ApiResponse(existencias, HttpStatus.OK), HttpStatus.OK);
     }
+
 
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<ApiResponse> update (ExistenciasDto existenciasDto) {
@@ -76,12 +81,16 @@ public class ExistenciasService {
     }
 
     @Transactional(rollbackFor = {SQLException.class})
-    public void delete (Long id) {
+    public void delete(Long id) {
         Optional<Existencias> foundExistencias = repository.findById(id);
-        if (foundExistencias.isPresent()){
+        Existencias existencias = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("ExistenciasNotFound"));
+        existencias.setEntradas(null);
+        existencias.setSalidas(null);
+        if (foundExistencias.isPresent()) {
             repository.deleteById(id);
         } else {
-            throw new EntityNotFoundException("ExistenciasNotFound");
+            throw new EntityNotFoundException("InsumoNotFound");
         }
     }
 }

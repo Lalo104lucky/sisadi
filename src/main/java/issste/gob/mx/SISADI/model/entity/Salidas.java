@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Set;
+
 
 @Entity
 @Getter
@@ -24,15 +26,14 @@ public class Salidas {
     @Column(name = "total", nullable = false)
     private Double total;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "salidas")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "salidas", orphanRemoval = true)
     @JsonIgnore
-    private Existencias existencias;
+    private Set<Existencias> existencias;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "operacion_id")
+    @JoinColumn(name = "operacion_id", nullable = false)
     private Operacion operacion;
 
-    @OneToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "insumos_id")
-    private Insumo insumo;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE, mappedBy = "salidas")
+    private Set<Insumo> insumos;
 }
