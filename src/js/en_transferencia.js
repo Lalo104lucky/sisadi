@@ -34,7 +34,6 @@ async function obtenerTransferEntrada() {
 
         const { id_usuario } = parseJwt(authToken);
 
-        // Obtener los datos del usuario
         const datosUsuario = await obtenerDatosUsuario(id_usuario);
         if (datosUsuario) {
             const nombrePersona = `${datosUsuario.persona.nombre} ${datosUsuario.persona.apellido_p} ${datosUsuario.persona.apellido_m}`;
@@ -129,13 +128,28 @@ function filtrarInsumos(insumos, clave, descripcion) {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
-    obtenerTransferEntrada();
+    await obtenerTransferEntrada();
 
     const insumos = await obtenerInsumos();
     llenarDescripciones(insumos);
 
     const operacionId = localStorage.getItem('operacionId');
     console.log('ID de la operación:', operacionId);
+
+    document.querySelector('.btn-cerrar').addEventListener('click', () => {
+        window.location.href = 'transferencia_entrada.html';
+    });
+
+    document.querySelector('.btn-cancel').addEventListener('click', async () => {
+        try {
+            await cancelarOperacion(operacionId);
+            alert('Operación cancelada correctamente');
+            window.location.href = 'transferencia_entrada.html';
+        } catch (error) {
+            console.error('Hubo un problema al cancelar la operación:', error);
+            alert('Error al cancelar la operación. Por favor, inténtalo de nuevo.');
+        }
+    });
 
     document.getElementById('agregarInsumo').addEventListener('click', async () => {
         const clave = document.getElementById('folioInput').value;
@@ -151,8 +165,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         if (insumoFiltrado && insumoFiltrado.length > 0) {
             const insumoData = insumoFiltrado[0]; // Considerar el primer insumo de la respuesta
-            agregarInsumoATabla(insumoData);
-
             const cantidad = parseFloat(document.getElementById('cantidadInput').value);
             const total = cantidad * insumoData.precio;
 
@@ -160,9 +172,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 cantidad: cantidad.toString(),
                 total: total.toFixed(2),
                 operacion_id: operacionId,
-                insumos_id: insumoData.id_insumo
+                insumos_id: [insumoData.id_insumo]
             };
-
 
             try {
                 const authToken = localStorage.getItem('authToken');
@@ -181,16 +192,43 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                 const responseData = await response.json();
                 console.log('Respuesta del servidor:', responseData);
+
+                const idEntradas = responseData.data.id_entradas;
+                agregarInsumoATabla(insumoData, idEntradas);
             } catch (error) {
                 console.error('Hubo un problema al crear la entrada:', error);
             }
 
         } else {
-            console.error('No se encontró el insumo');
+            alert('No se encontró el insumo');
         }
     });
 });
 
+async function cancelarOperacion(operacionId) {
+    try {
+        const authToken = localStorage.getItem('authToken');
+        if (!authToken) {
+            throw new Error('No se encontró el token de autenticación');
+        }
+
+        const response = await fetch(`http://localhost:8081/sisadi/operacion/${operacionId}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${authToken}`
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('Error al cancelar la operación');
+        }
+
+        console.log('Operación cancelada correctamente');
+    } catch (error) {
+        console.error('Hubo un problema al cancelar la operación:', error);
+        throw error;
+    }
+}
 
 function llenarDescripciones(insumos) {
     const unitSelect = document.getElementById('unitSelect');
@@ -206,13 +244,20 @@ let totalClaves = 0;
 let totalInsumos = 0;
 let totalGeneral = 0;
 
-function agregarInsumoATabla(insumo) {
-    const { clave, descripcion, precio, existencia } = insumo;
+function agregarInsumoATabla(insumo, id_entradas) {
+    const { clave, descripcion, precio } = insumo;
     const cantidad = parseFloat(document.getElementById('cantidadInput').value);
+
+    if (isNaN(cantidad) || isNaN(precio)) {
+        console.error('Cantidad o precio no son números válidos:', cantidad, precio);
+        return;
+    }
 
     const tableBody = document.getElementById('insumos-body');
     const row = document.createElement('tr');
-
+    
+    row.dataset.entradaId = id_entradas; 
+    
     const total = cantidad * precio;
     row.innerHTML = `
         <td>${clave}</td>
@@ -239,33 +284,70 @@ function mostrarDetallesInsumo(insumo) {
 }
 
 
-// Función para actualizar los totales en la tabla HTML
 function actualizarTotales() {
-    // Seleccionar los th de totales por sus IDs
     const totalClavesTh = document.getElementById('total-claves-cell');
     const totalInsumosTh = document.getElementById('total-insumos-cell');
     const totalGeneralTh = document.getElementById('total-general-cell');
 
-    // Actualizar el contenido de los th con los totales actuales
     totalClavesTh.textContent = totalClaves;
-    totalInsumosTh.textContent = totalInsumos; // Mostrar cantidad de insumos con dos decimales
-    totalGeneralTh.textContent = totalGeneral.toFixed(2); // Mostrar total general con dos decimales
+    totalInsumosTh.textContent = totalInsumos.toFixed(2);
+    totalGeneralTh.textContent = totalGeneral.toFixed(2);
 }
-
 
 function eliminarFila(button) {
     const row = button.closest('tr');
-    const cantidad = parseFloat(row.children[2].textContent); // Obtener la cantidad de la fila eliminada
+    const entradaId = row.dataset.entradaId; 
 
-    // Restar los valores de la fila eliminada de los totales globales
-    totalClaves--;
-    totalInsumos -= cantidad;
-    totalGeneral -= parseFloat(row.children[4].textContent); // Restar el total de la fila eliminada
+    eliminarEntrada(entradaId)
+        .then(() => {
+            const cantidad = parseFloat(row.children[2].textContent); 
+            const total = parseFloat(row.children[4].textContent.replace('$', '').trim());
 
-    // Eliminar la fila del DOM
-    row.remove();
+            if (isNaN(cantidad) || isNaN(total)) {
+                console.error('Cantidad o total no son números válidos:', cantidad, total);
+                return;
+            }
 
-    // Actualizar totales mostrados en la tabla
-    actualizarTotales();
+            totalClaves--;
+            totalInsumos -= cantidad;
+            totalGeneral -= total;
+
+            // Evitar que el totalGeneral sea negativo o -0.00
+            if (totalGeneral < 0) {
+                totalGeneral = 0;
+            }
+
+            row.remove();
+
+            actualizarTotales();
+        })
+        .catch(error => {
+            console.error('Hubo un problema al eliminar la entrada:', error);
+            alert('Error al eliminar la entrada. Por favor, inténtalo de nuevo.');
+        });
 }
 
+async function eliminarEntrada(entradaId) {
+    try {
+        const authToken = localStorage.getItem('authToken');
+        if (!authToken) {
+            throw new Error('No se encontró el token de autenticación');
+        }
+
+        const response = await fetch(`http://localhost:8081/sisadi/entradas/${entradaId}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${authToken}`
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('Error al eliminar la entrada');
+        }
+
+        alert('Entrada eliminada correctamente');
+    } catch (error) {
+        console.error('Hubo un problema al eliminar la entrada:', error);
+        throw error; 
+    }
+}

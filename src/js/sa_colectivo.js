@@ -25,7 +25,7 @@ async function obtenerDatosUsuario(id_usuario) {
     }
 }
 
-async function obtenerColectivo() {
+async function obtenerColectivoSalida() {
     try {
         const authToken = localStorage.getItem('authToken');
         if (!authToken) {
@@ -58,6 +58,7 @@ async function obtenerColectivo() {
 
     } catch (error) {
         console.error('Hubo un problema con la solicitud:', error);
+        mostrarNombrePersona('Error al cargar datos del usuario');
     }
 }
 
@@ -91,6 +92,263 @@ function mostrarNombrePersona(nombre) {
     }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    obtenerColectivo();
+async function obtenerInsumos() {
+    try {
+        const authToken = localStorage.getItem('authToken');
+        if (!authToken) {
+            throw new Error('No se encontró el token de autenticación');
+        }
+
+        const response = await fetch(`http://localhost:8081/sisadi/insumo/`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${authToken}`
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('Error al obtener los insumos');
+        }
+
+        const data = await response.json();
+        return data.data; // Devuelve los datos de los insumos
+    } catch (error) {
+        console.error('Hubo un problema al obtener los insumos:', error);
+        return [];
+    }
+}
+
+function filtrarInsumos(insumos, clave, descripcion) {
+    if (clave) {
+        return insumos.filter(insumo => insumo.clave.toString() === clave.toString());
+    } else if (descripcion) {
+        return insumos.filter(insumo => insumo.descripcion.toLowerCase().includes(descripcion.toLowerCase()));
+    }
+    return insumos;
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+    await obtenerColectivoSalida();
+
+    const insumos = await obtenerInsumos();
+    llenarDescripciones(insumos);
+
+    const operacionId = localStorage.getItem('operacionId');
+    console.log('ID de la operación:', operacionId);
+
+    document.querySelector('.btn-cerrar').addEventListener('click', () => {
+        window.location.href = 'colectivo.html';
+    });
+
+    document.querySelector('.btn-cancel').addEventListener('click', async () => {
+        try {
+            await cancelarOperacion(operacionId);
+            alert('Operación cancelada correctamente');
+            window.location.href = 'colectivo.html';
+        } catch (error) {
+            console.error('Hubo un problema al cancelar la operación:', error);
+            alert('Error al cancelar la operación. Por favor, inténtalo de nuevo.');
+        }
+    });
+
+    document.getElementById('agregarInsumo').addEventListener('click', async () => {
+        const clave = document.getElementById('folioInput').value;
+        const descripcion = document.getElementById('unitSelect').value;
+        const buscarPorClave = document.getElementById('customCheck').checked;
+
+        let insumoFiltrado;
+        if (buscarPorClave && clave) {
+            insumoFiltrado = filtrarInsumos(insumos, clave, null);
+        } else if (!buscarPorClave && descripcion) {
+            insumoFiltrado = filtrarInsumos(insumos, null, descripcion);
+        }
+
+        if (insumoFiltrado && insumoFiltrado.length > 0) {
+            const insumoData = insumoFiltrado[0]; // Considerar el primer insumo de la respuesta
+            const cantidad = parseFloat(document.getElementById('cantidadInput').value);
+            const total = cantidad * insumoData.precio;
+
+            const salidaData = {
+                cantidad: cantidad.toString(),
+                total: total.toFixed(2),
+                operacion_id: operacionId,
+                insumos_id: [insumoData.id_insumo] // Asegurarse de que es un array de IDs
+            };
+
+            try {
+                const authToken = localStorage.getItem('authToken');
+                const response = await fetch('http://localhost:8081/sisadi/salidas/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify(salidaData)
+                });
+
+                if (!response.ok) {
+                    throw new Error('Error al crear la salida');
+                }
+
+                const responseData = await response.json();
+                console.log('Respuesta del servidor:', responseData);
+
+                const idSalidas = responseData.data.id_salidas;
+                agregarInsumoATabla(insumoData, idSalidas);
+            } catch (error) {
+                console.error('Hubo un problema al crear la salida:', error);
+            }
+
+        } else {
+            alert('No se encontró el insumo');
+        }
+    });
 });
+
+async function cancelarOperacion(operacionId) {
+    try {
+        const authToken = localStorage.getItem('authToken');
+        if (!authToken) {
+            throw new Error('No se encontró el token de autenticación');
+        }
+
+        const response = await fetch(`http://localhost:8081/sisadi/operacion/${operacionId}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${authToken}`
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('Error al cancelar la operación');
+        }
+
+        console.log('Operación cancelada correctamente');
+    } catch (error) {
+        console.error('Hubo un problema al cancelar la operación:', error);
+        throw error;
+    }
+}
+
+function llenarDescripciones(insumos) {
+    const unitSelect = document.getElementById('unitSelect');
+    insumos.forEach(insumo => {
+        const option = document.createElement('option');
+        option.value = insumo.descripcion;
+        option.textContent = insumo.descripcion;
+        unitSelect.appendChild(option);
+    });
+}
+
+let totalClaves = 0;
+let totalInsumos = 0;
+let totalGeneral = 0;
+
+function agregarInsumoATabla(insumo, id_salidas) {
+    const { clave, descripcion, precio } = insumo;
+    const cantidad = parseFloat(document.getElementById('cantidadInput').value);
+
+    if (isNaN(cantidad) || isNaN(precio)) {
+        console.error('Cantidad o precio no son números válidos:', cantidad, precio);
+        return;
+    }
+
+    const tableBody = document.getElementById('insumos-body');
+    const row = document.createElement('tr');
+    
+    row.dataset.salidaId = id_salidas; 
+    
+    const total = cantidad * precio;
+    row.innerHTML = `
+        <td>${clave}</td>
+        <td>${descripcion}</td>
+        <td>${cantidad}</td>
+        <td>$ ${precio.toFixed(2)}</td>
+        <td>$ ${total.toFixed(2)}</td>
+        <td><button class="btn btn-danger btn-sm" onclick="eliminarFila(this)">Eliminar</button></td>
+    `;
+
+    tableBody.appendChild(row);
+
+    totalClaves++;
+    totalInsumos += cantidad;
+    totalGeneral += total;
+
+    actualizarTotales();
+
+    mostrarDetallesInsumo(insumo);
+}
+
+function mostrarDetallesInsumo(insumo) {
+    document.getElementById('precioInsumo').textContent = insumo.precio.toFixed(2);
+}
+
+
+function actualizarTotales() {
+    const totalClavesTh = document.getElementById('total-claves-cell');
+    const totalInsumosTh = document.getElementById('total-insumos-cell');
+    const totalGeneralTh = document.getElementById('total-general-cell');
+
+    totalClavesTh.textContent = totalClaves;
+    totalInsumosTh.textContent = totalInsumos.toFixed(2);
+    totalGeneralTh.textContent = totalGeneral.toFixed(2);
+}
+
+function eliminarFila(button) {
+    const row = button.closest('tr');
+    const salidaId = row.dataset.salidaId; 
+
+    eliminarSalida(salidaId)
+        .then(() => {
+            const cantidad = parseFloat(row.children[2].textContent); 
+            const total = parseFloat(row.children[4].textContent.replace('$', '').trim());
+
+            if (isNaN(cantidad) || isNaN(total)) {
+                console.error('Cantidad o total no son números válidos:', cantidad, total);
+                return;
+            }
+
+            totalClaves--;
+            totalInsumos -= cantidad;
+            totalGeneral -= total;
+
+            // Evitar que el totalGeneral sea negativo o -0.00
+            if (totalGeneral < 0) {
+                totalGeneral = 0;
+            }
+
+            row.remove();
+
+            actualizarTotales();
+        })
+        .catch(error => {
+            console.error('Hubo un problema al eliminar la salida:', error);
+            alert('Error al eliminar la salida. Por favor, inténtalo de nuevo.');
+        });
+}
+
+async function eliminarSalida(salidaId) {
+    try {
+        const authToken = localStorage.getItem('authToken');
+        if (!authToken) {
+            throw new Error('No se encontró el token de autenticación');
+        }
+
+        const response = await fetch(`http://localhost:8081/sisadi/salidas/${salidaId}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${authToken}`
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('Error al eliminar la salida');
+        }
+
+        alert('Salida eliminada correctamente');
+    } catch (error) {
+        console.error('Hubo un problema al eliminar la salida:', error);
+        throw error; 
+    }
+}
+

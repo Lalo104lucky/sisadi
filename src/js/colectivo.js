@@ -1,4 +1,3 @@
-// Funciones para obtener datos del usuario y colectivo
 async function obtenerDatosUsuario(id_usuario) {
     try {
         const authToken = localStorage.getItem('authToken');
@@ -53,7 +52,7 @@ function parseJwt(token) {
     try {
         const base64Url = token.split('.')[1];
         const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-        const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+        const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
             return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
         }).join(''));
 
@@ -82,7 +81,6 @@ function mostrarNombrePersona(nombre) {
 document.addEventListener('DOMContentLoaded', () => {
     obtenerColectivo();
 
-    // Enfocar automáticamente en el campo de entrada cuando la página se carga
     const folioInput = document.getElementById('folioInput');
     if (folioInput) {
         folioInput.focus();
@@ -107,15 +105,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 localStorage.setItem('folio', folio);
                 localStorage.setItem('unidad', 'HAE 139 "CENTENARIO DE LA REVOLUCIÓN MEXICANA"');
                 localStorage.setItem('tipoMovimiento', 'COLECTIVO');
+                localStorage.setItem('nombre', "SALIDA");
+                localStorage.setItem('proveedor_id', null);
                 localStorage.setItem('fecha', new Date().toLocaleDateString('es-MX', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }));
-                window.location.href = 'salidas_colectivo.html';
             } else {
-                console.error('Folio no puede estar vacío');
+                alert('Folio no puede estar vacío');
             }
         }
     }
 
-    // Agregar event listeners a los botones
     const btnCrear = document.querySelector('.btn-crear');
     const btnCancel = document.querySelector('.btn-cancel');
 
@@ -126,46 +124,46 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('No se encontraron los botones para agregar los event listeners');
     }
 
-    /**
-     //  Funciones para iniciar y detener Quagga
-    function iniciarLector() {
-        Quagga.init({
-            inputStream: {
-                name: "Live",
-                type: "LiveStream",
-                target: document.querySelector('#camera')
-            },
-            decoder: {
-                readers: ["ean_reader"]
+    document.getElementById('crearButton').addEventListener('click', async function() {
+        if (folioInput) {
+            const folio = folioInput.value;
+            if (folio) {
+                const operacionData = {
+                    fecha: new Date().toISOString(),
+                    folio: folio,
+                    nombre: "SALIDA",
+                    tipo_movimiento: "COLECTIVO",
+                    unidad: "HAE 139",
+                    proveedor_id: null
+                };
+    
+                try {
+                    const response = await fetch('http://localhost:8081/sisadi/operacion/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+                        },
+                        body: JSON.stringify(operacionData)
+                    });
+    
+                    if (!response.ok) {
+                        throw new Error('Error al crear la operación');
+                    }
+    
+                    const responseData = await response.json();
+                    console.log('Operación creada con éxito:', responseData);
+    
+                    const operacionId = responseData.data.id_operacion;
+                    localStorage.setItem('operacionId', operacionId);
+    
+                    window.location.href = 'salidas_colectivo.html';
+                } catch (error) {
+                    console.error('Hubo un problema con la solicitud:', error);
+                }
+            } else {
+                alert('Folio no puede estar vacío');
             }
-        }, function (err) {
-            if (err) {
-                console.log(err);
-                return;
-            }
-            console.log("Initialization finished. Ready to start");
-            Quagga.start();
-        });
-
-        Quagga.onDetected(function (data) {
-            console.log(data.codeResult.code);
-            document.getElementById('folioInput').value = data.codeResult.code; // Asigna el código al campo folioInput
-        });
-    }
-
-    function detenerLector() {
-        Quagga.stop();
-    }
-
-    // Agregar event listeners a los botones
-    const btnCrear = document.querySelector('.btn-crear');
-    const btnCancel = document.querySelector('.btn-cancel');
-
-    if (btnCrear && btnCancel) {
-        btnCrear.addEventListener('click', iniciarLector);
-        btnCancel.addEventListener('click', detenerLector);
-    } else {
-        console.error('No se encontraron los botones para agregar los event listeners');
-    }
-     */
+        }
+    });    
 });
